@@ -2,15 +2,52 @@
   "name": "tuningapp",
   "version": "0.0.0",
   "private": true,
+  "type": "commonjs",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "babel-node app.js",
+    "build": "babel ./app.js -w -d dist/js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "express": "~4.16.1",
+    "dotenv": "^10.0.0",
+    "esm": "^3.2.25",
+    "express": "^4.16.4",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuningApp/api-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tuningApp/api-server/issues"
+  },
+  "homepage": "https://github.com/tuningApp/api-server#readme",
+  "description": "",
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/node": "^7.14.2",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.14.4",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.27.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "prettier": "2.3.0",
+    "sequelize-cli": "^6.2.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb"
+    ]
   }
 }

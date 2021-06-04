@@ -1,41 +1,58 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+'use strict';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import createError from 'http-errors';
+import logger from 'morgan';
+import path from 'path';
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// controllers
+import * as authController from './controllers/authController.js';
+
+// connect db
+import { connection } from './models/index.js';
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+connection.sync({});
 
-app.use(logger('dev'));
+app.set('port', process.env.PORT || 3000);
+
+app.use(
+  logger(function (tokens, req, res) {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'),
+      '-',
+      tokens['response-time'](req, res),
+      'ms'
+    ].join(' ');
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(path.resolve(), 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.get('/', authController.start);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({ message: 'error', statusCode: err.status });
 });
 
-module.exports = app;
+app.listen(app.get('port'), () => {
+  console.log(app.get('port'), '번 포트에서 대기중');
+});
