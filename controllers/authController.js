@@ -1,4 +1,7 @@
-export function start(_req, res, _next) {
+/* eslint-disable import/prefer-default-export */
+// eslint-disable-next-line import/prefer-default-export
+// eslint-disable-next-line no-unused-vars
+export function start(_req, res, next) {
   res.send('respond with a resource');
 }
 

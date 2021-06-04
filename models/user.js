@@ -40,6 +40,7 @@ module.exports = class User extends Model {
   }
   /* RELATIONSHIPS */
 
+  // eslint-disable-next-line no-unused-vars
   static associate(models) {
     // Using additional options like CASCADE etc for demonstration
     // Can also simply do Task.belongsTo(models.User);
@@ -58,6 +59,7 @@ module.exports = class User extends Model {
   // Create a new user
   static async create(args) {
     // logic to create a user
+    // eslint-disable-next-line no-return-await
     return await this.create(args);
   }
 };

@@ -2,7 +2,6 @@
   "env": {
     "browser": true,
     "commonjs": true,
-    "es2021": true,
     "node": true
   },
   "parser": "babel-eslint",
@@ -14,13 +13,13 @@
   "globals": {
     "_": false
   },
-  "plugins": ["import", "html"],
+  "plugins": ["import"],
   "rules": {
     // "off" or 0 - turn the rule off
     // "warn" or 1 - turn the rule on as a warning (doesn’t affect exit code)
     // "error" or 2 - turn the rule on as an error (exit code is 1 when triggered)
     // "no-var": "off",
-    "no-console": "warn",
+    "no-console": "error",
     "no-plusplus": "off",
     "no-shadow": "off",
     "vars-on-top": "off",
@@ -36,6 +35,7 @@
     "require-await": "error",
     "arrow-parens": ["error", "as-needed"], // a => {}
     "no-param-reassign": ["error", { "props": false }],
+    "import/extensions": ["error", "always", { "ignorePackages": true }],
     "no-unused-expressions": [
       "error",
       {

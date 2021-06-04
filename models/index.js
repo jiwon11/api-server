@@ -1,7 +1,8 @@
+/* eslint-disable global-require */
 import Sequelize from 'sequelize';
-import configFile from '../config/config.js';
 import fs from 'fs';
 import path from 'path';
+import configFile from '../config/config.js';
 
 const env =
   process.env.stage === 'dev'
@@ -11,6 +12,7 @@ const env =
     : 'production';
 const config = configFile[env];
 
+// eslint-disable-next-line import/prefer-default-export
 export const connection = new Sequelize(
   config.database,
   config.username,
@@ -20,12 +22,12 @@ export const connection = new Sequelize(
 const basename = path.basename(__filename);
 
 fs.readdirSync(__dirname)
-  .filter(file => {
-    return (
+  .filter(
+    file =>
       file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
-    );
-  })
+  )
   .forEach(file => {
+    // eslint-disable-next-line import/no-dynamic-require
     const Model = require(path.join(__dirname, file));
     Model.initialize(connection);
   });
