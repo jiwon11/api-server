@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import configFile from '../config/config.js';
 
+/* jshint laxbreak: true */
 const env =
   process.env.stage === 'dev'
     ? 'development'

@@ -1,9 +1,10 @@
 'user strict';
 
-const dotenv = require('dotenv');
-dotenv.config();
+import { config } from 'dotenv';
 
-const env = process.env;
+config();
+
+const { env } = process;
 const development = {
   database: 'mvcTest',
   port: 3306,
@@ -92,4 +93,4 @@ const production = {
   */
 };
 
-module.exports = { development, production, test };
+export default { development, production, test };
