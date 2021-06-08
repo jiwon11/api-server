@@ -2,7 +2,7 @@
   "name": "tuningapp",
   "version": "0.0.0",
   "private": true,
-  "type": "commonjs",
+  "type": "commonJs",
   "scripts": {
     "start": "babel-node app.js",
     "build": "babel ./app.js -w -d dist/js"

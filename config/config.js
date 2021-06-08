@@ -1,8 +1,8 @@
 'user strict';
 
-import { config } from 'dotenv';
+import dotenv from 'dotenv';
 
-config();
+dotenv.config();
 
 const { env } = process;
 const development = {

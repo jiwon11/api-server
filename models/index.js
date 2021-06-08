@@ -27,10 +27,11 @@ fs.readdirSync(__dirname)
     file =>
       file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   )
-  .forEach(file => {
+  .forEach(async file => {
     // eslint-disable-next-line import/no-dynamic-require
-    const Model = require(path.join(__dirname, file));
-    Model.initialize(connection);
+    // const Model = require(path.join(__dirname, file));
+    const Model = await import(path.join(__dirname, file));
+    Model.default.initialize(connection);
   });
 // Load model associations
 Object.values(connection.models)
