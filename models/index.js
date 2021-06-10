@@ -1,7 +1,9 @@
 /* eslint-disable global-require */
 import Sequelize from 'sequelize';
 import fs from 'fs';
-import path from 'path';
+import path, { dirname } from 'path';
+
+import { fileURLToPath } from 'url';
 import configFile from '../config/config.js';
 
 /* jshint laxbreak: true */
@@ -20,6 +22,9 @@ export const connection = new Sequelize(
   config.password,
   config
 );
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const basename = path.basename(__filename);
 
 fs.readdirSync(__dirname)

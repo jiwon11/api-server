@@ -1,10 +1,9 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import createError from 'http-errors';
-import logger from 'morgan';
 import path from 'path';
-import moment from 'moment-timezone';
 
+import * as logger from './libs/logger/index.js';
 // controllers
 import * as authController from './controllers/authController.js';
 
@@ -19,45 +18,7 @@ app.set('port', process.env.PORT || 3000);
 
 app.set('trust proxy', true);
 
-logger.token('cookie', req => req.cookie);
-logger.token(
-  'remote-ip',
-  req => req.ip || req.headers['x-real-ip'] || req.headers['x-forwarded-for']
-);
-logger.token('host', req => req.hostname);
-logger.token('user', req => {
-  if (req.user) {
-    return JSON.stringify(req.user);
-  }
-  return 'no user info';
-});
-logger.token('params', req => req.params);
-logger.token('body', req => req.body);
-logger.token('query', req => req.query);
-logger.token('date', () => moment().tz('Asia/Seoul').format());
-logger.token('statusMessage', res => res.statusMessage);
-function jsonFormat(tokens, req, res) {
-  return JSON.stringify({
-    userIPv4: tokens['remote-ip'](req, res),
-    user: tokens.user(req, res),
-    time: tokens.date(),
-    method: tokens.method(req, res),
-    host: tokens.host(req),
-    url: tokens.url(req, res),
-    'response-time': `${tokens['response-time'](req, res)} ms`,
-    'http-version': tokens['http-version'](req, res),
-    'status-code': tokens.status(req, res),
-    query: tokens.query(req),
-    params: tokens.params(req),
-    body: tokens.body(req),
-    'content-length': tokens.res(req, res, 'content-length'),
-    referrer: tokens.referrer(req, res),
-    cookie: tokens.cookie(req),
-    'user-agent': tokens['user-agent'](req, res),
-    statusMessage: tokens.statusMessage(res)
-  });
-}
-app.use(logger(jsonFormat));
+app.use(logger.dev);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

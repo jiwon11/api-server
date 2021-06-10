@@ -1,5 +1,6 @@
-import { Model, DataTypes } from 'sequelize';
+import pkg from 'sequelize';
 
+const { Model, DataTypes } = pkg;
 export default class User extends Model {
   static initialize(sequelize) {
     this.init(
