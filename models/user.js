@@ -1,6 +1,7 @@
-import { Model, DataTypes } from 'sequelize';
+import pkg from 'sequelize';
 
-module.exports = class User extends Model {
+const { Model, DataTypes } = pkg;
+export default class User extends Model {
   static initialize(sequelize) {
     this.init(
       {
@@ -62,4 +63,4 @@ module.exports = class User extends Model {
     // eslint-disable-next-line no-return-await
     return await this.create(args);
   }
-};
+}

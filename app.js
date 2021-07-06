@@ -1,9 +1,9 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import createError from 'http-errors';
-import logger from 'morgan';
 import path from 'path';
 
+import * as logger from './libs/logger/index.js';
 // controllers
 import * as authController from './controllers/authController.js';
 
@@ -16,19 +16,10 @@ connection.sync({});
 
 app.set('port', process.env.PORT || 3000);
 
-app.use(
-  logger((tokens, req, res) =>
-    [
-      tokens.method(req, res),
-      tokens.url(req, res),
-      tokens.status(req, res),
-      tokens.res(req, res, 'content-length'),
-      '-',
-      tokens['response-time'](req, res),
-      'ms'
-    ].join(' ')
-  )
-);
+app.set('trust proxy', true);
+
+app.use(logger.dev);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -52,7 +43,7 @@ app.use((err, req, res) => {
   res.json({ message: 'error', statusCode: err.status });
 });
 
-app.listen(app.get('port'), () => {
+app.listen(app.get('port'), '0.0.0.0', () => {
   // eslint-disable-next-line no-console
   console.log(app.get('port'), '번 포트에서 대기중');
 });

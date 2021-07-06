@@ -1,9 +1,12 @@
 /* eslint-disable global-require */
 import Sequelize from 'sequelize';
 import fs from 'fs';
-import path from 'path';
+import path, { dirname } from 'path';
+
+import { fileURLToPath } from 'url';
 import configFile from '../config/config.js';
 
+/* jshint laxbreak: true */
 const env =
   process.env.stage === 'dev'
     ? 'development'
@@ -19,6 +22,9 @@ export const connection = new Sequelize(
   config.password,
   config
 );
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const basename = path.basename(__filename);
 
 fs.readdirSync(__dirname)
@@ -26,10 +32,11 @@ fs.readdirSync(__dirname)
     file =>
       file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   )
-  .forEach(file => {
+  .forEach(async file => {
     // eslint-disable-next-line import/no-dynamic-require
-    const Model = require(path.join(__dirname, file));
-    Model.initialize(connection);
+    // const Model = require(path.join(__dirname, file));
+    const Model = await import(path.join(__dirname, file));
+    Model.default.initialize(connection);
   });
 // Load model associations
 Object.values(connection.models)
