@@ -1,9 +1,7 @@
 /* eslint-disable global-require */
 import Sequelize from 'sequelize';
 import fs from 'fs';
-import path, { dirname } from 'path';
-
-import { fileURLToPath } from 'url';
+import path from 'path';
 import configFile from '../config/config.js';
 
 /* jshint laxbreak: true */
@@ -15,7 +13,6 @@ const env =
     : 'production';
 const config = configFile[env];
 
-// eslint-disable-next-line import/prefer-default-export
 export const connection = new Sequelize(
   config.database,
   config.username,
@@ -23,22 +20,22 @@ export const connection = new Sequelize(
   config
 );
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+//const __filename = fileURLToPath(import.meta.url);
+//const __dirname = dirname(__filename);
 const basename = path.basename(__filename);
 
+console.log('initialize Model Class');
 fs.readdirSync(__dirname)
   .filter(
     file =>
       file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   )
-  .forEach(async file => {
-    // eslint-disable-next-line import/no-dynamic-require
-    // const Model = require(path.join(__dirname, file));
-    const Model = await import(path.join(__dirname, file));
-    Model.default.initialize(connection);
+  .forEach(file => {
+    const { default: model } = require(path.join(__dirname, file));
+    model.initialize(connection, Sequelize);
   });
-// Load model associations
+
+//console.log('Load model associations');
 Object.values(connection.models)
   // associate 함수가 있는 모델만 필터링한다.
   .filter(model => typeof model.associate === 'function')

@@ -12,7 +12,6 @@ const development = {
   username: env.DB_Username,
   password: env.DB_Password,
   dialect: 'mysql',
-  logging: false,
   timezone: '+09:00',
   dialectOptions: {
     charset: 'utf8mb4',
