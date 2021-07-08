@@ -2,7 +2,7 @@
 import Sequelize from 'sequelize';
 import fs from 'fs';
 import path from 'path';
-import configFile from '../config/config.js';
+import configFile from '../config/config';
 
 /* jshint laxbreak: true */
 const env =

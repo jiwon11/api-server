@@ -1,4 +1,4 @@
-import loaders from './loaders/index.js';
+import loaders from './loaders';
 import express from 'express';
 
 async function startServer() {
@@ -12,7 +12,7 @@ async function startServer() {
         console.log(err);
         return;
       }
-      console.log(`Your server is ready !`);
+      console.log(`Server is ready !`);
     });
   } catch (err) {
     console.log(err);

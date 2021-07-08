@@ -1,9 +1,10 @@
-import expressLoader from './express.js';
-import { connection } from '../models/index.js';
+import expressLoader from './express';
+import { connection } from '../models';
 
 export default async app => {
-  console.log(connection.models);
-  connection.sync({ force: true });
+  connection.sync({
+    force: true
+  });
 
   await expressLoader(app);
   console.log('Express Intialized');
