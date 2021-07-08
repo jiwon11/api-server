@@ -1,40 +1,28 @@
 import pkg from 'sequelize';
 
 const { Model, DataTypes } = pkg;
-export default class User extends Model {
+export default class EducationLevel extends Model {
   static initialize(sequelize) {
     this.init(
       {
-        firstName: {
-          type: DataTypes.STRING,
+        day: {
+          type: DataTypes.INTEGER,
           allowNull: false
         },
-        lastName: {
-          type: DataTypes.STRING,
+        startTime: {
+          type: DataTypes.TIME,
           allowNull: false
         },
-        username: {
-          type: DataTypes.STRING,
+        endTime: {
+          type: DataTypes.TIME,
           allowNull: false
-        },
-        password_hash: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
-        salt: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
-        email: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          validate: {
-            isEmail: true
-          }
-        },
-        isActive: {
-          type: DataTypes.BOOLEAN
         }
+      },
+      {
+        timestamps: true,
+        paranoid: true,
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
       },
       { sequelize }
     );

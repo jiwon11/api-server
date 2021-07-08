@@ -46,4 +46,4 @@ const dev = logger((tokens, req, res) =>
   })
 );
 
-export { stream, dev };
+export default { stream, dev };
