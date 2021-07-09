@@ -3,8 +3,13 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
 
+// custom utils And middlewares
 import logger from '../libs/logger/index';
+import refresh from '../libs/utils/refresh';
+import authJWT from '../middlewares/authJWT';
+import jsonResult from '../middlewares/jsonResult';
 
+// application Controllers for Routes
 import { start } from '../controllers/authController';
 import {
   pageNotFoundError,
@@ -22,11 +27,15 @@ export default async app => {
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(express.static(path.join(path.resolve(), 'public')));
+  // custom middlewares
+  app.use(jsonResult);
 
-  app.get('/', start);
+  // application routes
+  app.get('/refresh', refresh);
+  app.get('/', authJWT, start);
 
+  // custom Error controllers
   app.use(pageNotFoundError);
   app.use(respondInternalError);
-
   return app;
 };
