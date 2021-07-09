@@ -7,7 +7,7 @@ export default async app => {
   });
 
   await expressLoader(app);
-  console.log('Express Intialized');
+  console.log('Express Initialized');
 
   // ... more loaders can be here
 
