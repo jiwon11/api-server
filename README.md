@@ -1,2 +1,3 @@
 - git remote 개인 리포리토리로 변경
 - 카카오 워크와 연동 됩니다.
+- [Gitkraken](https://www.gitkraken.com/)을 통해 커밋 메시지와 add / commit / push & Pull Request을 처리합니다.
