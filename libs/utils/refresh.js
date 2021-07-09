@@ -15,7 +15,7 @@ export default async (req, res) => {
 
     // 디코딩 결과가 없으면 권한이 없음을 응답.
     if (decoded === null) {
-      res.jsonResult(401, 'No authorized!', undefined);
+      res.jsonResult(401, 'No authorized!');
     }
 
     /* access token의 decoding 된 값에서
@@ -26,18 +26,18 @@ export default async (req, res) => {
     if (authResult.ok === false && authResult.message === 'jwt expired') {
       // 1. access token이 만료되고, refresh token도 만료 된 경우 => 새로 로그인해야합니다.
       if (refreshResult.ok === false) {
-        res.jsonResult(401, 'No authorized!', undefined);
+        res.jsonResult(401, 'No authorized!');
       } else {
         // 2. access token이 만료되고, refresh token은 만료되지 않은 경우 => 새로운 access token을 발급
         const newAccessToken = sign(user);
-        res.jsonResult(200, undefined, {
+        res.jsonResult(200, {
           accessToken: newAccessToken,
           refreshToken
         });
       }
     } else {
       // 3. access token이 만료되지 않은경우 => refresh 할 필요가 없습니다.
-      res.jsonResult(400, 'Acess token is not expired!', undefined);
+      res.jsonResult(400, 'Acess token is not expired!');
     }
   } else {
     // access token 또는 refresh token이 헤더에 없는 경우
@@ -52,10 +52,6 @@ export default async (req, res) => {
         )
       );
       */
-    res.jsonResult(
-      400,
-      'Access token and refresh token are need for refresh!',
-      undefined
-    );
+    res.jsonResult(400, 'Access token and refresh token are need for refresh!');
   }
 };
