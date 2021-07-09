@@ -1,6 +1,6 @@
 import httpStatus from 'http-status-codes';
 
-exports.pageNotFoundError = (req, res) => {
+export const pageNotFoundError = (req, res) => {
   let errorCode = httpStatus.NOT_FOUND;
   const result = {
     status: errorCode,
@@ -11,7 +11,7 @@ exports.pageNotFoundError = (req, res) => {
   res.status(errorCode).json(result);
 };
 
-exports.respondInternalError = (errors, req, res, next) => {
+export const respondInternalError = (errors, req, res, next) => {
   let errorCode = httpStatus.INTERNAL_SERVER_ERROR;
   console.log(`Error occured: ${errors.stack}`);
   const result = {
