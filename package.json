@@ -28,6 +28,10 @@
     "type": "git",
     "url": "git+https://github.com/tuningApp/api-server.git"
   },
+  "apidoc": {
+    "title": "Custom apiDoc browser title",
+    "url": "https://tuningapp.github.io/ApiDoc/"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
