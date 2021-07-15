@@ -23,8 +23,8 @@ export const verify = token => {
     decoded = jwt.verify(token, secret);
     return {
       ok: true,
-      id: decoded.id,
-      role: decoded.role
+      id: decoded.id
+      //role: decoded.role
     };
   } catch (err) {
     return {

@@ -1,10 +1,9 @@
 import expressLoader from './express';
+import mySqlLoader from './mysql';
 import { connection } from '../models';
 
 export default async app => {
-  connection.sync({
-    force: true
-  });
+  mySqlLoader(connection);
 
   await expressLoader(app);
   console.log('Express Initialized');

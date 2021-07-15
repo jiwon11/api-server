@@ -5,12 +5,12 @@ import path from 'path';
 
 // custom utils And middlewares
 import logger from '../libs/logger/index';
-import refresh from '../libs/utils/refresh';
-import authJWT from '../middlewares/authJWT';
 import jsonResult from '../middlewares/jsonResult';
 
+import indexRouter from '../routes/index';
+import authRouter from '../routes/auth';
+
 // application Controllers for Routes
-import { start } from '../controllers/authController';
 import {
   pageNotFoundError,
   respondInternalError
@@ -31,8 +31,8 @@ export default async app => {
   app.use(jsonResult);
 
   // application routes
-  app.get('/refresh', refresh);
-  app.get('/', authJWT, start);
+  app.use('/', indexRouter);
+  app.use('/auth', authRouter);
 
   // custom Error controllers
   app.use(pageNotFoundError);
