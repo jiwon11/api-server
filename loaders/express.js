@@ -8,7 +8,7 @@ import logger from '../libs/logger/index';
 import jsonResult from '../middlewares/jsonResult';
 
 import indexRouter from '../routes/index';
-import authRouter from '../routes/auth';
+import userRouter from '../routes/user';
 
 // application Controllers for Routes
 import {
@@ -17,8 +17,6 @@ import {
 } from '../controllers/errorController';
 
 export default async app => {
-  app.set('port', process.env.PORT || 3000);
-
   app.set('trust proxy', true);
   app.use(cors());
   app.use(logger.dev);
@@ -32,7 +30,7 @@ export default async app => {
 
   // application routes
   app.use('/', indexRouter);
-  app.use('/auth', authRouter);
+  app.use('/user', userRouter);
 
   // custom Error controllers
   app.use(pageNotFoundError);

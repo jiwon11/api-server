@@ -6,7 +6,7 @@ import authJWT from '../middlewares/authJWT';
 import { refresh } from '../libs/utils/jwt';
 
 // application Controllers for Routes
-import { start } from '../controllers/authController';
+import { start } from '../controllers/userController';
 
 /* set routes from Controllers */
 router.get('/refresh', refresh);
