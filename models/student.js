@@ -39,6 +39,9 @@ export default class Student extends Model {
       },
       {
         sequelize,
+        modelName: 'Student',
+        tableName: 'STUDENT_TB',
+        freezeTableName: true,
         timestamps: true,
         paranoid: true,
         charset: 'utf8mb4',
