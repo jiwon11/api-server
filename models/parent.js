@@ -1,7 +1,7 @@
 import pkg from 'sequelize';
 const { Model } = pkg;
 
-export default class Teacher extends Model {
+export default class Parent extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
@@ -11,39 +11,16 @@ export default class Teacher extends Model {
           primaryKey: true,
           allowNull: false
         },
-        name: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
-        gender: {
-          type: DataTypes.CHAR(1),
-          allowNull: true
-        },
-        birthday: {
-          type: DataTypes.DATEONLY,
+        nickname: {
+          type: DataTypes.STRING(20),
           allowNull: false,
-          defaultValue: sequelize.NOW
-        },
-        introduction: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          defaultValue: ''
-        },
-        certificated_edu: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: false
-        },
-        can_rental: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: false
+          unique: true
         }
       },
       {
         sequelize,
-        modelName: 'Teacher',
-        tableName: 'TEACHER_TB',
+        modelName: 'Parent',
+        tableName: 'PARENT_TB',
         freezeTableName: true,
         timestamps: true,
         paranoid: true,
@@ -67,6 +44,11 @@ export default class Teacher extends Model {
     });
     */
     //this.belongsTo(models.User);
+    this.hasMany(models.Student, {
+      onDelete: 'CASCADE',
+      foreignKey: 'parent_ID',
+      sourceKey: 'ID'
+    });
   }
 
   /* CLASS-LEVEL FUNCTIONS */

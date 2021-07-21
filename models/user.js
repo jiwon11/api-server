@@ -1,49 +1,42 @@
 import pkg from 'sequelize';
 const { Model } = pkg;
 
-export default class Curriculum extends Model {
+export default class Teacher extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
-        title: {
+        ID: {
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV1,
+          primaryKey: true,
+          allowNull: false
+        },
+        phone_NO: {
           type: DataTypes.STRING,
           allowNull: false
         },
-        numberOfTimes: {
-          type: DataTypes.INTEGER,
+        role: {
+          type: DataTypes.STRING,
           allowNull: false
         },
-        price: {
-          type: DataTypes.INTEGER,
+        kakao_token: {
+          type: DataTypes.STRING(1000),
           allowNull: false
         },
-        canExhibit: {
+        isActive: {
           type: DataTypes.BOOLEAN,
-          allowNull: false
+          defaultValue: true
         },
-        target: {
+        profile_img: {
           type: DataTypes.STRING,
-          allowNull: true
-        },
-        textbook: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
-        totalDescription: {
-          type: DataTypes.TEXT,
-          allowNull: true
-        },
-        place: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
-        isUntact: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false
+          defaultValue: ''
         }
       },
       {
         sequelize,
+        modelName: 'User',
+        tableName: 'USER_TB',
+        freezeTableName: true,
         timestamps: true,
         paranoid: true,
         charset: 'utf8mb4',
@@ -65,6 +58,16 @@ export default class Curriculum extends Model {
       }
     });
     */
+    this.hasOne(models.Teacher, {
+      onDelete: 'CASCADE',
+      targetKey: 'ID',
+      foreignKey: 'user_ID'
+    });
+    this.hasOne(models.Parent, {
+      onDelete: 'CASCADE',
+      targetKey: 'ID',
+      foreignKey: 'user_ID'
+    });
   }
 
   /* CLASS-LEVEL FUNCTIONS */

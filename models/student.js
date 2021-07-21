@@ -5,36 +5,43 @@ export default class Student extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
-        id: {
-          type: DataTypes.CHAR(36),
+        ID: {
+          type: DataTypes.UUID,
           defaultValue: DataTypes.UUIDV1,
           primaryKey: true,
           allowNull: false
         },
-        nickname: {
-          type: DataTypes.STRING(30),
+        name: {
+          type: DataTypes.STRING(20),
           allowNull: false
         },
-        phoneNumber: {
-          type: DataTypes.STRING,
-          allowNull: true
+        age: {
+          type: DataTypes.INTEGER,
+          allowNull: false
         },
         gender: {
           type: DataTypes.CHAR(1),
           allowNull: true
         },
-        certifiedPhoneNumber: {
+        phone_NO: {
+          type: DataTypes.STRING,
+          allowNull: true
+        },
+        has_instrument: {
           type: DataTypes.BOOLEAN,
-          defaultValue: false,
           allowNull: false
         },
-        isActive: {
-          type: DataTypes.BOOLEAN,
-          defaultValue: true
-        },
-        profileImg: {
+        full_address: {
           type: DataTypes.STRING,
-          defaultValue: ''
+          allowNull: false
+        },
+        has_lesson_experience: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false
+        },
+        can_read_score: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false
         }
       },
       {
@@ -63,6 +70,11 @@ export default class Student extends Model {
       }
     });
     */
+    this.belongsTo(models.Parent, {
+      onDelete: 'CASCADE',
+      foreignKey: 'parent_ID',
+      sourceKey: 'ID'
+    });
   }
 
   /* CLASS-LEVEL FUNCTIONS */
