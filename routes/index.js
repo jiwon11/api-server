@@ -7,6 +7,8 @@ import authJWT from '../middlewares/authJWT';
 // application Controllers for Routes
 import { start } from '../controllers/homeController';
 
+/* set routes from Controllers */
+router.get('/', start);
 /**
  * @apiDefine successResponse
  * @apiSuccess (200) {String} id User Id
@@ -196,8 +198,5 @@ import { start } from '../controllers/homeController';
  * }
  *
  * */
-
-/* set routes from Controllers */
-router.get('/', start);
 
 export default router;
