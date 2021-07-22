@@ -1,7 +1,7 @@
 import pkg from 'sequelize';
 const { Model } = pkg;
 
-export default class Teacher extends Model {
+export default class User extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
@@ -17,10 +17,11 @@ export default class Teacher extends Model {
         },
         role: {
           type: DataTypes.STRING,
-          allowNull: false,
+          defaultValue: null,
+          allowNull: true,
           validate: {
             isIn: {
-              args: [['parent', 'teacher']],
+              args: [['parent', 'teacher', null]],
               msg: 'User role Must be Parent or Teacher'
             }
           }
@@ -57,22 +58,43 @@ export default class Teacher extends Model {
     // Using additional options like CASCADE etc for demonstration
     this.hasOne(models.Teacher, {
       onDelete: 'CASCADE',
-      targetKey: 'ID',
+      sourceKey: 'ID',
       foreignKey: 'user_ID'
     });
     this.hasOne(models.Parent, {
       onDelete: 'CASCADE',
-      targetKey: 'ID',
+      sourceKey: 'ID',
       foreignKey: 'user_ID'
     });
   }
 
   /* CLASS-LEVEL FUNCTIONS */
-
   // Create a new user
+  /*
   static async create(args) {
     // logic to create a user
     // eslint-disable-next-line no-return-await
     return await this.create(args);
+  }
+  */
+  static async getUserRole(userId) {
+    // logic to create a user
+    // eslint-disable-next-line no-return-await
+    const userRecord = await this.findOne({
+      where: {
+        ID: userId
+      },
+      attributes: ['ID', 'phone_NO', 'role', 'kakao_token', 'profile_img']
+    });
+    let roleRecord;
+    if (userRecord.role === 'parent') {
+      roleRecord = await userRecord.getParent({ attributes: ['nickname'] });
+    } else {
+      roleRecord = await userRecord.getTeacher({
+        attributes: ['name', 'gender', 'birthday', 'certificated_edu']
+      });
+    }
+
+    return { ...userRecord.dataValues, ...roleRecord.dataValues };
   }
 }

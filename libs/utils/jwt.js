@@ -1,12 +1,17 @@
 import jwt from 'jsonwebtoken';
-import { RedisClient } from 'redis';
+import redisClient from '../utils/redis';
 import { promisify } from 'util';
+
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const secret = process.env.SECRET;
 
 export const sign = user => {
   const payload = {
     // access token에 들어갈 payload
-    id: user.id,
+    id: user.ID,
     role: user.role
   };
 
@@ -45,7 +50,7 @@ export const refresh = () => {
 
 export const refreshVerify = async (token, userId) => {
   // refresh token 검증
-  const getAsync = promisify(RedisClient.get).bind(RedisClient);
+  const getAsync = promisify(redisClient.get).bind(redisClient);
   try {
     const data = await getAsync(userId); // refresh token 가져오기
     if (token === data) {

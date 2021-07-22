@@ -16,7 +16,7 @@ logger.token(
 logger.token('host', req => req.hostname);
 logger.token('user', req => {
   if (req.user) {
-    return JSON.stringify(req.user);
+    return req.user;
   }
   return 'no user info';
 });

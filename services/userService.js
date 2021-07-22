@@ -1,14 +1,42 @@
 import UserModel from '../models/user';
-import CompanyModel from '../models/company';
+import ParentModel from '../models/parent';
+import TeacherModel from '../models/teacher';
 
 export default class UserService {
-  async Signup(user) {
-    const userRecord = await UserModel.create(user);
-    const companyRecord = await CompanyModel.create(userRecord); // needs userRecord to have the database id
-    const salaryRecord = await SalaryModel.create(userRecord, companyRecord); // depends on user and company to be created
+  static async login(userDTO) {
+    try {
+      const [userRecord, created] = await UserModel.findOrCreate({
+        where: { phone_NO: userDTO.phone_NO, kakao_token: userDTO.kakao_token }
+      });
+      return { userRecord: userRecord.dataValues, created };
+    } catch (err) {
+      return err;
+    }
+  }
 
-    await EmailService.startSignupSequence(userRecord);
-
-    return { user: userRecord, company: companyRecord };
+  static async setRole(userId, roleDTO) {
+    try {
+      let userRoleRecord;
+      await UserModel.update({ role: roleDTO.role }, { where: { ID: userId } });
+      const userRoleData = {
+        ...roleDTO.data,
+        ...{ user_ID: userId }
+      };
+      console.log(userRoleData);
+      if (roleDTO.role === 'parent') {
+        userRoleRecord = await ParentModel.create(userRoleData);
+      } else if (roleDTO.role === 'teacher') {
+        userRoleRecord = await TeacherModel.create(userRoleData);
+      }
+      const userRecord = await UserModel.getUserRole(userId);
+      console.log(userRecord);
+      return {
+        statusCode: 200,
+        result: userRecord
+      };
+    } catch (err) {
+      console.log(err);
+      return { statusCode: 500, result: err.message };
+    }
   }
 }

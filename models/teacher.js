@@ -5,7 +5,7 @@ export default class Teacher extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
-        ID: {
+        teacher_ID: {
           type: DataTypes.UUID,
           defaultValue: DataTypes.UUIDV1,
           primaryKey: true,
@@ -57,40 +57,44 @@ export default class Teacher extends Model {
   // eslint-disable-next-line no-unused-vars
   static associate(models) {
     // Using additional options like CASCADE etc for demonstration
+    this.belongsTo(models.User, {
+      foreignKey: 'user_ID',
+      targetKey: 'ID'
+    });
     this.hasMany(models.CoverImg, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'ID'
+      sourceKey: 'teacher_ID'
     });
     this.hasMany(models.EducationLevel, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'ID'
+      sourceKey: 'teacher_ID'
     });
     this.hasMany(models.Career, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'ID'
+      sourceKey: 'teacher_ID'
     });
     this.hasMany(models.Account, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'ID'
+      sourceKey: 'teacher_ID'
     });
     this.hasMany(models.LessonPlace, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'ID'
+      sourceKey: 'teacher_ID'
     });
     this.hasMany(models.ForeignLanguage, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'ID'
+      sourceKey: 'teacher_ID'
     });
     this.hasMany(models.AvailableTime, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'ID'
+      sourceKey: 'teacher_ID'
     });
     this.belongsToMany(models.LessonStyle, {
       onDelete: 'CASCADE',
@@ -110,11 +114,4 @@ export default class Teacher extends Model {
   }
 
   /* CLASS-LEVEL FUNCTIONS */
-
-  // Create a new user
-  static async create(args) {
-    // logic to create a user
-    // eslint-disable-next-line no-return-await
-    return await this.create(args);
-  }
 }

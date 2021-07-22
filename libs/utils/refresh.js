@@ -52,6 +52,9 @@ export default async (req, res) => {
         )
       );
       */
-    res.jsonResult(400, 'Access token and refresh token are need for refresh!');
+    res.jsonResult(
+      400,
+      'access token과 refresh token이 Header에 존재하지 않습니다!'
+    );
   }
 };

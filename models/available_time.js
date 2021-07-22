@@ -49,7 +49,7 @@ export default class AvailableTime extends Model {
     this.belongsTo(models.Teacher, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      targetKey: 'ID'
+      targetKey: 'teacher_ID'
     });
   }
 

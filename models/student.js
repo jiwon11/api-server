@@ -64,7 +64,7 @@ export default class Student extends Model {
     this.belongsTo(models.Parent, {
       onDelete: 'CASCADE',
       foreignKey: 'parent_ID',
-      sourceKey: 'ID'
+      sourceKey: 'parent_ID'
     });
   }
 
