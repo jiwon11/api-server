@@ -1,47 +1,44 @@
 import pkg from 'sequelize';
 const { Model } = pkg;
 
-export default class Teacher extends Model {
+export default class CoverImg extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
         ID: {
           type: DataTypes.UUID,
           defaultValue: DataTypes.UUIDV1,
-          primaryKey: true,
-          allowNull: false
+          primaryKey: true
         },
-        phone_NO: {
+        name: {
           type: DataTypes.STRING,
           allowNull: false
         },
-        role: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          validate: {
-            isIn: {
-              args: [['parent', 'teacher']],
-              msg: 'User role Must be Parent or Teacher'
-            }
-          }
-        },
-        kakao_token: {
-          type: DataTypes.STRING(1000),
+        mime_type: {
+          type: DataTypes.STRING(10),
           allowNull: false
         },
-        isActive: {
-          type: DataTypes.BOOLEAN,
-          defaultValue: true
+        url: {
+          type: DataTypes.STRING(150),
+          allowNull: false
         },
-        profile_img: {
-          type: DataTypes.STRING,
-          defaultValue: ''
+        width: {
+          type: DataTypes.INTEGER,
+          allowNull: false
+        },
+        height: {
+          type: DataTypes.INTEGER,
+          allowNull: false
+        },
+        size: {
+          type: DataTypes.INTEGER,
+          allowNull: false
         }
       },
       {
         sequelize,
-        modelName: 'User',
-        tableName: 'USER_TB',
+        modelName: 'CoverImg',
+        tableName: 'COVER_IMG_TB',
         freezeTableName: true,
         timestamps: true,
         paranoid: true,
@@ -55,15 +52,10 @@ export default class Teacher extends Model {
   // eslint-disable-next-line no-unused-vars
   static associate(models) {
     // Using additional options like CASCADE etc for demonstration
-    this.hasOne(models.Teacher, {
+    this.belongsTo(models.Teacher, {
       onDelete: 'CASCADE',
-      targetKey: 'ID',
-      foreignKey: 'user_ID'
-    });
-    this.hasOne(models.Parent, {
-      onDelete: 'CASCADE',
-      targetKey: 'ID',
-      foreignKey: 'user_ID'
+      foreignKey: 'teacher_ID',
+      targetKey: 'ID'
     });
   }
 

@@ -1,7 +1,7 @@
 import pkg from 'sequelize';
 const { Model } = pkg;
 
-export default class Teacher extends Model {
+export default class Account extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
@@ -11,37 +11,19 @@ export default class Teacher extends Model {
           primaryKey: true,
           allowNull: false
         },
-        phone_NO: {
-          type: DataTypes.STRING,
+        bank_name: {
+          type: DataTypes.STRING(20),
           allowNull: false
         },
-        role: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          validate: {
-            isIn: {
-              args: [['parent', 'teacher']],
-              msg: 'User role Must be Parent or Teacher'
-            }
-          }
-        },
-        kakao_token: {
-          type: DataTypes.STRING(1000),
+        number: {
+          type: DataTypes.STRING(200),
           allowNull: false
-        },
-        isActive: {
-          type: DataTypes.BOOLEAN,
-          defaultValue: true
-        },
-        profile_img: {
-          type: DataTypes.STRING,
-          defaultValue: ''
         }
       },
       {
         sequelize,
-        modelName: 'User',
-        tableName: 'USER_TB',
+        modelName: 'Account',
+        tableName: 'ACCOUNT_TB',
         freezeTableName: true,
         timestamps: true,
         paranoid: true,
@@ -55,15 +37,10 @@ export default class Teacher extends Model {
   // eslint-disable-next-line no-unused-vars
   static associate(models) {
     // Using additional options like CASCADE etc for demonstration
-    this.hasOne(models.Teacher, {
+    this.belongsTo(models.Teacher, {
       onDelete: 'CASCADE',
-      targetKey: 'ID',
-      foreignKey: 'user_ID'
-    });
-    this.hasOne(models.Parent, {
-      onDelete: 'CASCADE',
-      targetKey: 'ID',
-      foreignKey: 'user_ID'
+      foreignKey: 'teacher_ID',
+      targetKey: 'ID'
     });
   }
 

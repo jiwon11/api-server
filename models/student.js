@@ -61,15 +61,6 @@ export default class Student extends Model {
   // eslint-disable-next-line no-unused-vars
   static associate(models) {
     // Using additional options like CASCADE etc for demonstration
-    // Can also simply do Task.belongsTo(models.User);
-    /*
-    this.hasMany(models.Post, {
-      onDelete: 'CASCADE',
-      foreignKey: {
-        allowNull: false
-      }
-    });
-    */
     this.belongsTo(models.Parent, {
       onDelete: 'CASCADE',
       foreignKey: 'parent_ID',

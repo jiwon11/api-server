@@ -25,7 +25,7 @@ export default class Teacher extends Model {
           defaultValue: sequelize.NOW
         },
         introduction: {
-          type: DataTypes.STRING,
+          type: DataTypes.TEXT,
           allowNull: false,
           defaultValue: ''
         },
@@ -57,16 +57,56 @@ export default class Teacher extends Model {
   // eslint-disable-next-line no-unused-vars
   static associate(models) {
     // Using additional options like CASCADE etc for demonstration
-    // Can also simply do Task.belongsTo(models.User);
-    /*
-    this.hasMany(models.Post, {
+    this.hasMany(models.CoverImg, {
       onDelete: 'CASCADE',
-      foreignKey: {
-        allowNull: false
-      }
+      foreignKey: 'teacher_ID',
+      sourceKey: 'ID'
     });
-    */
-    //this.belongsTo(models.User);
+    this.hasMany(models.EducationLevel, {
+      onDelete: 'CASCADE',
+      foreignKey: 'teacher_ID',
+      sourceKey: 'ID'
+    });
+    this.hasMany(models.Career, {
+      onDelete: 'CASCADE',
+      foreignKey: 'teacher_ID',
+      sourceKey: 'ID'
+    });
+    this.hasMany(models.Account, {
+      onDelete: 'CASCADE',
+      foreignKey: 'teacher_ID',
+      sourceKey: 'ID'
+    });
+    this.hasMany(models.LessonPlace, {
+      onDelete: 'CASCADE',
+      foreignKey: 'teacher_ID',
+      sourceKey: 'ID'
+    });
+    this.hasMany(models.ForeignLanguage, {
+      onDelete: 'CASCADE',
+      foreignKey: 'teacher_ID',
+      sourceKey: 'ID'
+    });
+    this.hasMany(models.AvailableTime, {
+      onDelete: 'CASCADE',
+      foreignKey: 'teacher_ID',
+      sourceKey: 'ID'
+    });
+    this.belongsToMany(models.LessonStyle, {
+      onDelete: 'CASCADE',
+      through: 'TEACHER_LESSON_STYLE',
+      foreignKey: 'teacher_ID'
+    });
+    this.belongsToMany(models.District, {
+      onDelete: 'CASCADE',
+      through: 'HOPE_LESSON_DISTRICT',
+      foreignKey: 'teacher_ID'
+    });
+    this.belongsToMany(models.Instrument, {
+      onDelete: 'CASCADE',
+      through: 'TEACHER_INSTRUMENT',
+      foreignKey: 'teacher_ID'
+    });
   }
 
   /* CLASS-LEVEL FUNCTIONS */

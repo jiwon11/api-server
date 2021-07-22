@@ -1,26 +1,32 @@
 import pkg from 'sequelize';
 const { Model } = pkg;
 
-export default class Parent extends Model {
+export default class Career extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
         ID: {
-          type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV1,
-          primaryKey: true,
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true
+        },
+        category: {
+          type: DataTypes.STRING(20),
           allowNull: false
         },
-        nickname: {
+        description: {
+          type: DataTypes.STRING(200),
+          allowNull: false
+        },
+        period: {
           type: DataTypes.STRING(20),
-          allowNull: false,
-          unique: true
+          allowNull: false
         }
       },
       {
         sequelize,
-        modelName: 'Parent',
-        tableName: 'PARENT_TB',
+        modelName: 'Career',
+        tableName: 'CAREER_TB',
         freezeTableName: true,
         timestamps: true,
         paranoid: true,
@@ -34,25 +40,10 @@ export default class Parent extends Model {
   // eslint-disable-next-line no-unused-vars
   static associate(models) {
     // Using additional options like CASCADE etc for demonstration
-    this.hasMany(models.Student, {
+    this.belongsTo(models.Teacher, {
       onDelete: 'CASCADE',
-      foreignKey: 'parent_ID',
-      sourceKey: 'ID'
-    });
-    this.belongsToMany(models.LessonStyle, {
-      onDelete: 'CASCADE',
-      through: 'HOPE_LESSON_STYLE',
-      foreignKey: 'parent_ID'
-    });
-    this.belongsToMany(models.District, {
-      onDelete: 'CASCADE',
-      through: 'RESIDENCE',
-      foreignKey: 'parent_ID'
-    });
-    this.belongsToMany(models.Instrument, {
-      onDelete: 'CASCADE',
-      through: 'HOPE_INSTRUMENT',
-      foreignKey: 'parent_ID'
+      foreignKey: 'teacher_ID',
+      targetKey: 'ID'
     });
   }
 

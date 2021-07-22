@@ -6,8 +6,8 @@ const secret = process.env.SECRET;
 export const sign = user => {
   const payload = {
     // access token에 들어갈 payload
-    id: user.id
-    //role: user.role
+    id: user.id,
+    role: user.role
   };
 
   return jwt.sign(payload, secret, {
@@ -23,8 +23,8 @@ export const verify = token => {
     decoded = jwt.verify(token, secret);
     return {
       ok: true,
-      id: decoded.id
-      //role: decoded.role
+      id: decoded.id,
+      role: decoded.role
     };
   } catch (err) {
     return {
