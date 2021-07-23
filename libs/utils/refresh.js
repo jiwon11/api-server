@@ -1,4 +1,5 @@
 import { sign, verify, refreshVerify } from './jwt';
+import UserModel from '../../models/user';
 import jwt from 'jsonwebtoken';
 
 export default async (req, res) => {
@@ -29,6 +30,17 @@ export default async (req, res) => {
         res.jsonResult(401, 'No authorized!');
       } else {
         // 2. access token이 만료되고, refresh token은 만료되지 않은 경우 => 새로운 access token을 발급
+        let user = null;
+        try {
+          user = await UserModel.findOne({
+            where: {
+              ID: decoded.id
+            }
+          });
+        } catch (err) {
+          res.jsonResult(401, err.message);
+        }
+        console.log(`user : ${user}`);
         const newAccessToken = sign(user);
         res.jsonResult(200, {
           accessToken: newAccessToken,
@@ -52,9 +64,6 @@ export default async (req, res) => {
         )
       );
       */
-    res.jsonResult(
-      400,
-      'access token과 refresh token이 Header에 존재하지 않습니다!'
-    );
+    res.jsonResult(400, 'access token과 refresh token이 Header에 존재하지 않습니다!');
   }
 };

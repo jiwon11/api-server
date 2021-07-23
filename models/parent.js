@@ -5,7 +5,7 @@ export default class Parent extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
-        parent_ID: {
+        ID: {
           type: DataTypes.UUID,
           defaultValue: DataTypes.UUIDV1,
           primaryKey: true,
@@ -41,7 +41,7 @@ export default class Parent extends Model {
     this.hasMany(models.Student, {
       onDelete: 'CASCADE',
       foreignKey: 'parent_ID',
-      sourceKey: 'parent_ID'
+      sourceKey: 'ID'
     });
     this.belongsToMany(models.LessonStyle, {
       onDelete: 'CASCADE',

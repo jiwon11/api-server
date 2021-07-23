@@ -39,4 +39,50 @@ export default class UserService {
       return { statusCode: 500, result: err.message };
     }
   }
+
+  static async edit(userId, userRole, userEditDTO) {
+    try {
+      for (let userColumn of ['phone_NO', 'profile_img']) {
+        if (userColumn in Object.keys(userEditDTO)) {
+          const findColumn = {};
+          findColumn[userColumn] = userEditDTO[userColumn];
+          await UserModel.update(findColumn, { where: { ID: userId } });
+        }
+      }
+      let includeModel;
+      if (userRole === 'parent') {
+        await ParentModel.update(userEditDTO, { where: { user_ID: userId } });
+        includeModel = ParentModel;
+      } else if (userRole === 'teacher') {
+        await TeacherModel.update(userEditDTO, { where: { user_ID: userId } });
+        includeModel = TeacherModel;
+      } else {
+        return {
+          statusCode: 409,
+          result: '사용자의 role이 설정되지 않았습니다.'
+        };
+      }
+      const userRoleRecord = await UserModel.findOne({
+        where: {
+          id: userId
+        },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'deletedAt']
+        },
+        include: {
+          model: includeModel,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'deletedAt']
+          }
+        }
+      });
+      return {
+        statusCode: 200,
+        result: userRoleRecord
+      };
+    } catch (err) {
+      console.log(err);
+      return { statusCode: 500, result: err.message };
+    }
+  }
 }

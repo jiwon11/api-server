@@ -5,10 +5,16 @@ const router = express.Router();
 import authJWT from '../middlewares/authJWT';
 
 // application Controllers for Routes
-import { login, setRole } from '../controllers/userController';
+import * as userController from '../controllers/userController';
+import * as studentController from '../controllers/studentController';
 
 /* set routes from Controllers */
-router.post('/login', login);
+router.post('/login', userController.login);
+router.post('/role', authJWT, userController.setRole);
+router.put('/', authJWT, userController.edit);
 
-router.post('/role', authJWT, setRole);
+router.post('/student', authJWT, studentController.add);
+router.get('/students', authJWT, studentController.getAll);
+router.put('/student', authJWT, studentController.edit);
+
 export default router;
