@@ -2,10 +2,6 @@ import userService from '../services/userService';
 import { sign, refresh } from '../libs/utils/jwt';
 import redisClient from '../libs/utils/redis';
 
-export function start(req, res) {
-  return res.jsonResult(200, req.user);
-}
-
 /*
 exports.login = (req, res, next) => {
   res.send("respond with a resource");

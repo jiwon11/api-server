@@ -9,6 +9,7 @@ import jsonResult from '../middlewares/jsonResult';
 
 import indexRouter from '../routes/index';
 import userRouter from '../routes/user';
+import authRouter from '../routes/auth';
 
 // application Controllers for Routes
 import {
@@ -31,7 +32,7 @@ export default async app => {
   // application routes
   app.use('/', indexRouter);
   app.use('/user', userRouter);
-
+  app.use('/auth', authRouter);
   // custom Error controllers
   app.use(pageNotFoundError);
   app.use(respondInternalError);
