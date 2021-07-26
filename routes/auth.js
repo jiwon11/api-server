@@ -4,6 +4,7 @@ const router = express.Router();
 // custom utils And middlewares
 import refresh from '../libs/utils/refresh';
 import * as userController from '../controllers/userController';
+import authJWT from '../middlewares/authJWT';
 /**
  * @apiDefine Error
  * @apiError (ErrorCode) 401 access token이 만료되지 않은경우
@@ -130,5 +131,38 @@ router.post('/login', userController.login);
  * @apiUse Error
  */
 router.get('/refresh', refresh);
+
+/**
+ * @api {DELETE} /auth/withdrawal 사용자 탈퇴
+ * @apiName 사용자 탈퇴
+ * @apiDescription 사용자가 튜닝 서비스를 탈퇴하는 api입니다. <strong>현재 사용자 탈퇴 API는 구조만 잡혀 있고 제대로 실행되지 않습니다. 사용자와 관련된 모든 테이블 구현과 API가 구현되고 개발을 완료할 예정입니다.</strong>
+ * @apiGroup Auth
+ * @apiVersion 1.0.0
+ * @apiPermission GET-refresh
+ * @apiHeader {String} Authorization 사용자 JWT access token key.
+ * @apiHeader {String} Refresh 사용자 JWT refresh token key.
+ * @apiExample {curl} curl
+ *   curl -X DELETE /auth/withdrawal\
+ *        -H "Authorization: Bearer thisisjwtaccesstoken"\
+ *        -H "Refresh: Bearer thisisjwtrefreshtoken"\
+ *
+ * @apiExample {node.js} node.js
+ *   const axios = require('axios');
+ *   try {
+ *      const response = await axios({
+ *        method: 'DELETE',
+ *        url: '/auth/withdrawal',
+ *        headers: { 'Authorization': 'Bearer thisisjwtaccesstoken', "Refresh" : "thisisjwtrefreshtoken" }
+ *     });
+ *     console.log('refresh :', response);
+ *   } catch (error) {
+ *     console.error(error);
+ *   }
+ *
+ * @apiSuccessExample {json} delete success
+ * HTTP/1.1 204 No Content
+ * @apiUse Error
+ */
+router.delete('/withdrawal', authJWT, userController.withdrawal);
 
 export default router;

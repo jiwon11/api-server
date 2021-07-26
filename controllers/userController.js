@@ -83,3 +83,13 @@ export const edit = async function (req, res) {
     return res.jsonResult(statusCode, result.errors);
   }
 };
+
+export const withdrawal = async function (req, res) {
+  try {
+    const userId = req.user.ID;
+    const { statusCode, result } = await userService.withdrawal(userId);
+    return res.jsonResult(statusCode, result);
+  } catch (err) {
+    return res.jsonResult(statusCode, result.errors);
+  }
+};

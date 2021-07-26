@@ -10,6 +10,7 @@ export default class UserService {
       });
       return { userRecord: userRecord.dataValues, created };
     } catch (err) {
+      console.log(err);
       return err;
     }
   }
@@ -71,8 +72,23 @@ export default class UserService {
         result: { updated: true }
       };
     } catch (err) {
-      console.log(err.errors);
+      console.log(err);
       return { statusCode: 500, result: err };
+    }
+  }
+
+  static async withdrawal(userId) {
+    try {
+      await UserModel.destroy({
+        where: { ID: userId }
+      });
+      return {
+        statusCode: 204,
+        result: { deleted: true }
+      };
+    } catch (err) {
+      console.log(err);
+      return err;
     }
   }
 }

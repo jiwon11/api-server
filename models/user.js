@@ -47,7 +47,19 @@ export default class User extends Model {
         timestamps: true,
         paranoid: true,
         charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci'
+        collate: 'utf8mb4_unicode_ci',
+        hooks: {
+          beforeDestroy: async function (instance, options) {
+            const parent = await instance.getParent();
+            await parent.destroy();
+            const teacher = await instance.getTeacher();
+            await teacher.destroy();
+            const children = await instance.getChilds();
+            for (const child of children) {
+              await child.destroy();
+            }
+          }
+        }
       }
     );
   }
