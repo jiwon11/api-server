@@ -1,5 +1,6 @@
 import ParentModel from '../models/parent';
-import StudentModel from '../models/student';
+import ChildModel from '../models/child';
+import childService from './childService';
 
 export default class parentService {
   static async get(userId) {
@@ -21,18 +22,35 @@ export default class parentService {
     }
   }
 
+  static async hasChild(userId, childId) {
+    const parentRecord = await ParentModel.findOne({
+      where: {
+        user_ID: userId
+      }
+    });
+    if (parentRecord) {
+      const hasChild = await parentRecord.hasChild(childId);
+      return hasChild;
+    } else {
+      return {
+        statusCode: 404,
+        result: '사용자를 찾을 수 없습니다.'
+      };
+    }
+  }
+
   static async edit(parentId, parentEditDTO) {
     try {
       const editData = parentEditDTO;
-      await StudentModel.update(editData, { where: { ID: studentId } });
-      const updatedStudentRecord = await StudentModel.findOne({ where: { ID: studentId } });
+      await ParentModel.update(editData, { where: { ID: parentId } });
+      const updatedParentRecord = await ParentModel.findOne({ where: { ID: parentId } });
       return {
         statusCode: 201,
-        result: updatedStudentRecord
+        result: updatedParentRecord
       };
     } catch (err) {
-      console.log(err);
-      return { statusCode: 500, result: err.message };
+      console.log(err.errors);
+      return { statusCode: 500, result: err };
     }
   }
 }

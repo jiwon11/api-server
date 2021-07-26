@@ -10,52 +10,76 @@ exports.login = (req, res, next) => {
 */
 
 export const login = async function (req, res) {
-  const userDTO = req.body;
-  const { userRecord, created } = await userService.login(userDTO);
+  try {
+    const userDTO = req.body;
+    const { userRecord, created } = await userService.login(userDTO);
 
-  const accessToken = sign(userRecord);
-  const refreshToken = refresh();
+    const accessToken = sign(userRecord);
+    const refreshToken = refresh();
 
-  redisClient.set(userRecord.ID, refreshToken, (err, result) => {
-    console.log(err);
-  });
+    redisClient.set(userRecord.ID, refreshToken, (err, result) => {
+      console.log(err);
+    });
 
-  return res.jsonResult(201, {
-    created,
-    accessToken: accessToken,
-    refreshToken: refreshToken
-  });
+    let statusCode;
+    if (created) {
+      statusCode = 201;
+    } else {
+      statusCode = 200;
+    }
+    return res.jsonResult(statusCode, {
+      created,
+      accessToken: accessToken,
+      refreshToken: refreshToken
+    });
+  } catch (err) {
+    return res.jsonResult(statusCode, result.errors);
+  }
 };
 
 export const setRole = async function (req, res) {
-  const userId = req.user.ID;
-  const roleDTO = req.body;
-  const { statusCode, result } = await userService.setRole(userId, roleDTO);
+  try {
+    const userId = req.user.ID;
+    const roleDTO = req.body;
+    const { statusCode, result } = await userService.setRole(userId, roleDTO);
+    if (statusCode === 200) {
+      const accessToken = sign(result);
+      const refreshToken = refresh();
 
-  const accessToken = sign(result);
-  const refreshToken = refresh();
+      redisClient.del(result.ID, function (err, response) {
+        if (response == 1) {
+          console.log('성공적으로 이전 토큰을 삭제하였습니다!');
+        } else {
+          console.log(`삭제에 실패하였습니다. ${err.message}`);
+        }
+      });
 
-  redisClient.del(result.ID, function (err, response) {
-    if (response == 1) {
-      console.log('성공적으로 이전 토큰을 삭제하였습니다!');
+      redisClient.set(result.ID, refreshToken, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(result);
+      });
+      return res.jsonResult(statusCode, {
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      });
     } else {
-      console.log(`삭제에 실패하였습니다. {err.message}`);
+      return res.jsonResult(statusCode, result.errors);
     }
-  });
-
-  redisClient.set(result.ID, refreshToken, (err, result) => {
-    console.log(err);
-  });
-  return res.jsonResult(statusCode, {
-    accessToken: accessToken,
-    refreshToken: refreshToken
-  });
+  } catch (err) {
+    return res.jsonResult(statusCode, result.errors);
+  }
 };
 
 export const edit = async function (req, res) {
-  const userId = req.user.ID;
-  const userRole = req.user.role;
-  const userEditDTO = req.body;
-  const { statusCode, result } = await userService.edit(userId, userRole, userEditDTO);
-  return res.jsonResult(statusCode, result);
+  try {
+    const userId = req.user.ID;
+    const userRole = req.user.role;
+    const userEditDTO = req.body;
+    const { statusCode, result } = await userService.edit(userId, userRole, userEditDTO);
+    return res.jsonResult(statusCode, result);
+  } catch (err) {
+    return res.jsonResult(statusCode, result.errors);
+  }
 };

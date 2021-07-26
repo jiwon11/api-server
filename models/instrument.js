@@ -37,7 +37,7 @@ export default class Instrument extends Model {
       through: 'TEACHER_INSTRUMENT',
       foreignKey: 'instrument_ID'
     });
-    this.belongsToMany(models.Parent, {
+    this.belongsToMany(models.Child, {
       onDelete: 'CASCADE',
       through: 'HOPE_INSTRUMENT',
       foreignKey: 'instrument_ID'

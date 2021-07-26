@@ -1,7 +1,7 @@
 import pkg from 'sequelize';
 const { Model } = pkg;
 
-export default class Student extends Model {
+export default class Child extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
@@ -46,7 +46,7 @@ export default class Student extends Model {
       },
       {
         sequelize,
-        modelName: 'Student',
+        modelName: 'Child',
         tableName: 'STUDENT_TB',
         freezeTableName: true,
         timestamps: true,
@@ -65,6 +65,11 @@ export default class Student extends Model {
       onDelete: 'CASCADE',
       foreignKey: 'parent_ID',
       sourceKey: 'parent_ID'
+    });
+    this.belongsToMany(models.Instrument, {
+      onDelete: 'CASCADE',
+      through: 'HOPE_INSTRUMENT',
+      foreignKey: 'child_ID'
     });
   }
 

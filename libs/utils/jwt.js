@@ -18,7 +18,7 @@ export const sign = user => {
   return jwt.sign(payload, secret, {
     // secret으로 sign하여 발급하고 return
     algorithm: 'HS256', // 암호화 알고리즘
-    expiresIn: '1h' // 유효기간
+    expiresIn: '1y' //expiresIn: '1h' // 유효기간
   });
 };
 
@@ -44,7 +44,7 @@ export const refresh = () => {
   return jwt.sign({}, secret, {
     // refresh token은 payload 없이 발급
     algorithm: 'HS256',
-    expiresIn: '14d'
+    expiresIn: '1y' //expiresIn: '14d'
   });
 };
 

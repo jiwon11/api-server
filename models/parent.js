@@ -38,7 +38,7 @@ export default class Parent extends Model {
       foreignKey: 'user_ID',
       targetKey: 'ID'
     });
-    this.hasMany(models.Student, {
+    this.hasMany(models.Child, {
       onDelete: 'CASCADE',
       foreignKey: 'parent_ID',
       sourceKey: 'ID'
@@ -51,11 +51,6 @@ export default class Parent extends Model {
     this.belongsToMany(models.District, {
       onDelete: 'CASCADE',
       through: 'RESIDENCE',
-      foreignKey: 'parent_ID'
-    });
-    this.belongsToMany(models.Instrument, {
-      onDelete: 'CASCADE',
-      through: 'HOPE_INSTRUMENT',
       foreignKey: 'parent_ID'
     });
   }

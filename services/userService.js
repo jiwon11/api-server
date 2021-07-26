@@ -16,27 +16,34 @@ export default class UserService {
 
   static async setRole(userId, roleDTO) {
     try {
-      let userRoleRecord;
-      await UserModel.update({ role: roleDTO.role }, { where: { ID: userId } });
-      const userRoleData = {
-        ...roleDTO.data,
-        ...{ user_ID: userId }
-      };
-      console.log(userRoleData);
-      if (roleDTO.role === 'parent') {
-        userRoleRecord = await ParentModel.create(userRoleData);
-      } else if (roleDTO.role === 'teacher') {
-        userRoleRecord = await TeacherModel.create(userRoleData);
+      const userRecord = await UserModel.findOne({ where: { ID: userId } });
+      if (userRecord) {
+        await userRecord.update({ role: roleDTO.role });
+        const userRoleData = {
+          ...roleDTO.data,
+          ...{ user_ID: userId }
+        };
+        console.log(userRoleData);
+        if (roleDTO.role === 'parent') {
+          await ParentModel.create(userRoleData);
+        } else if (roleDTO.role === 'teacher') {
+          await TeacherModel.create(userRoleData);
+        }
+        const userRoleRecord = await UserModel.getUserRole(userId);
+        console.log(userRoleData);
+        return {
+          statusCode: 200,
+          result: userRoleRecord
+        };
+      } else {
+        return {
+          statusCode: 404,
+          result: '사용자를 찾을 수 없습니다.'
+        };
       }
-      const userRecord = await UserModel.getUserRole(userId);
-      console.log(userRecord);
-      return {
-        statusCode: 200,
-        result: userRecord
-      };
     } catch (err) {
       console.log(err);
-      return { statusCode: 500, result: err.message };
+      return { statusCode: 500, result: err };
     }
   }
 
@@ -49,40 +56,23 @@ export default class UserService {
           await UserModel.update(findColumn, { where: { ID: userId } });
         }
       }
-      let includeModel;
       if (userRole === 'parent') {
         await ParentModel.update(userEditDTO, { where: { user_ID: userId } });
-        includeModel = ParentModel;
       } else if (userRole === 'teacher') {
         await TeacherModel.update(userEditDTO, { where: { user_ID: userId } });
-        includeModel = TeacherModel;
       } else {
         return {
           statusCode: 409,
           result: '사용자의 role이 설정되지 않았습니다.'
         };
       }
-      const userRoleRecord = await UserModel.findOne({
-        where: {
-          id: userId
-        },
-        attributes: {
-          exclude: ['createdAt', 'updatedAt', 'deletedAt']
-        },
-        include: {
-          model: includeModel,
-          attributes: {
-            exclude: ['createdAt', 'updatedAt', 'deletedAt']
-          }
-        }
-      });
       return {
         statusCode: 200,
-        result: userRoleRecord
+        result: { updated: true }
       };
     } catch (err) {
-      console.log(err);
-      return { statusCode: 500, result: err.message };
+      console.log(err.errors);
+      return { statusCode: 500, result: err };
     }
   }
 }

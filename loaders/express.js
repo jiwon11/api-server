@@ -10,12 +10,10 @@ import jsonResult from '../middlewares/jsonResult';
 import indexRouter from '../routes/index';
 import userRouter from '../routes/user';
 import authRouter from '../routes/auth';
+import parentRouter from '../routes/parent';
 
 // application Controllers for Routes
-import {
-  pageNotFoundError,
-  respondInternalError
-} from '../controllers/errorController';
+import { pageNotFoundError, respondInternalError } from '../controllers/errorController';
 
 export default async app => {
   app.set('trust proxy', true);
@@ -33,6 +31,7 @@ export default async app => {
   app.use('/', indexRouter);
   app.use('/user', userRouter);
   app.use('/auth', authRouter);
+  app.use('/parent', parentRouter);
   // custom Error controllers
   app.use(pageNotFoundError);
   app.use(respondInternalError);
