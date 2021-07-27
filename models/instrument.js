@@ -17,7 +17,6 @@ export default class Instrument extends Model {
       },
       {
         sequelize,
-        modelName: 'Instrument',
         tableName: 'INSTRUMENT_TB',
         freezeTableName: true,
         timestamps: true,

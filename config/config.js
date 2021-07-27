@@ -11,9 +11,11 @@ const development = {
   host: env.DB_Host,
   username: env.DB_Username,
   password: env.DB_Password,
+  logging: true,
   dialect: 'mysql',
   timezone: '+09:00',
   dialectOptions: {
+    useUTC: false,
     charset: 'utf8mb4',
     dateStrings: true,
     typeCast: true

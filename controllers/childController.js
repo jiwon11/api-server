@@ -38,7 +38,7 @@ export const getOne = async function (req, res) {
   }
 };
 
-export const add = async function (req, res) {
+export const create = async function (req, res) {
   try {
     const userId = req.user.ID;
     const userRole = req.user.role;
@@ -49,8 +49,8 @@ export const add = async function (req, res) {
       if (typeof childDTO !== 'object') {
         return res.jsonResult(400, `${typeof childDTO}는 유효하지 않는 데이터 형태입니다.`);
       } else {
-        const { statusCode, created } = await childService.add(userId, childDTO);
-        return res.jsonResult(statusCode, created);
+        const { statusCode, result } = await childService.create(userId, childDTO);
+        return res.jsonResult(statusCode, result);
       }
     }
   } catch (err) {

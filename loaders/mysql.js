@@ -1,6 +1,6 @@
 export default connection => {
   connection.sync({
-    //force: true
+    force: true
   });
 
   return connection;

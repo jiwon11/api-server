@@ -2,19 +2,20 @@ import ParentModel from '../models/parent';
 import ChildModel from '../models/child';
 import InstrumentModel from '../models/instrument';
 export default class childService {
-  static async add(userId, childDTO) {
+  static async create(userId, childDTO) {
     try {
       const parentRecord = await ParentModel.findOne({
         where: { user_ID: userId }
       });
-      const childRecord = await ChildModel.create({
+      const newChildRecord = await ChildModel.create({
         ...childDTO,
         ...{ parent_ID: parentRecord.ID }
       });
-      await childRecord.addInstruments(childDTO.hope_instrument);
+      await newChildRecord.addInstruments(childDTO.hope_instrument);
+      const childRecord = await ChildModel.findByPk(newChildRecord.ID, { include: [{ model: InstrumentModel }] });
       return {
         statusCode: 201,
-        result: { created: true }
+        result: childRecord
       };
     } catch (err) {
       console.log(err.errors);
@@ -24,9 +25,9 @@ export default class childService {
 
   static async getOne(childId) {
     try {
-      const childRecords = await ChildModel.findByPk(childId);
+      const childRecords = await ChildModel.findByPk(childId, { include: [{ model: InstrumentModel }] });
       return {
-        statusCode: 201,
+        statusCode: 200,
         result: childRecords
       };
     } catch (err) {
@@ -40,14 +41,15 @@ export default class childService {
       const childRecords = await ChildModel.findAll({
         where: {
           parent_ID: parentId
-        }
+        },
+        include: [{ model: InstrumentModel }]
       });
       return {
-        statusCode: 201,
+        statusCode: 200,
         result: childRecords
       };
     } catch (err) {
-      console.log(err.errors);
+      console.log(err);
       return { statusCode: 500, result: err };
     }
   }
@@ -55,10 +57,12 @@ export default class childService {
   static async edit(childId, childEditDTO) {
     try {
       const editData = childEditDTO;
-      await ChildModel.update(editData, { where: { ID: childId } });
+      const updatedChildRecord = await ChildModel.findByPk(childId);
+      await updatedChildRecord.update(editData);
+      const childRecord = await ChildModel.findByPk(updatedChildRecord.ID);
       return {
         statusCode: 201,
-        result: { updated: true }
+        result: childRecord
       };
     } catch (err) {
       console.log(err.errors);

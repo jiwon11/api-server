@@ -17,7 +17,6 @@ export default class LessonPlace extends Model {
       },
       {
         sequelize,
-        modelName: 'LessonPlace',
         tableName: 'LESSON_PLACE_TB',
         freezeTableName: true,
         timestamps: true,

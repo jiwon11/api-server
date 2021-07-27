@@ -46,8 +46,7 @@ export default class Child extends Model {
       },
       {
         sequelize,
-        modelName: 'Child',
-        tableName: 'STUDENT_TB',
+        tableName: 'CHILD_TB',
         freezeTableName: true,
         timestamps: true,
         paranoid: true,

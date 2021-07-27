@@ -84,15 +84,37 @@ import * as childController from '../controllers/childController';
  *   }
  *
  * @apiSuccess (Response) {Boolean} created 사용자 신규 생성 여부 (신규 생성 여부에 따라 statuscode가 달라집니다. 신규 생성일 경우 201, 아닐 경우 200을 응답합니다.)
- * @apiSuccess (Response) {String} accessToken 사용자 JWT access token
- * @apiSuccess (Response) {String} refreshToken 사용자 JWT refresh token
+ * @apiSuccess (Response) {String} body[ID] 자녀 ID
+ * @apiSuccess (Response) {Integer} body[age] 학생 나이
+ * @apiSuccess (Response) {String} body[name] 학생 이름
+ * @apiSuccess (Response) {String} [phone_NO] 학생 핸드폰 번호
+ * @apiSuccess (Response) {String} body[full_address] 학생 주소지
+ * @apiSuccess (Response) {Boolean} body[has_instrument] 학생 악기 보유 여부
+ * @apiSuccess (Response) {Boolean} body[has_lesson_experience] 학생 레슨 경험 여부
+ * @apiSuccess (Response) {Boolean} body[can_read_score] 학생 악보 해석 가능 여부
+ * @apiSuccess (Response) {String} body[created_At] 학생 추가 일자
+ * @apiSuccess (Response) {String} body[updated_At] 학생 수정 일자
+ * @apiSuccess (Response) {List} body[Instruments] 학생이 뱅우고픈 악기
  * @apiSuccessExample {json} created success
  * HTTP/1.1 201 OK
  * {
  * "statusCode": 201,
  * "body": {
- *     created: true
- *     }
+ *      "ID": "2c8e1730-ee86-11eb-b406-45085e755e02",
+ *      "name": "홍길동12",
+ *      "age": 20,
+ *      "gender": "M",
+ *      "phone_NO": "01012345678",
+ *      "has_instrument": true,
+ *      "full_address": "경기도 성남시 분당구 삼평동",
+ *      "has_lesson_experience": true,
+ *      "can_read_score": true,
+ *      "createdAt": "2021-07-27 11:56:00",
+ *      "updatedAt": "2021-07-27 11:56:00",
+ *      "deletedAt": null,
+ *      "parent_ID": "b7fd4190-ee7e-11eb-b6c5-ab1668841ae8",
+ *      "Instruments": []
+ *  }
  * }
  *
  * @apiError (ErrorCode) 400 Request Body Error response
@@ -109,7 +131,7 @@ import * as childController from '../controllers/childController';
  * }
  * @apiUse Error
  */
-router.post('/child', authJWT, childController.add);
+router.post('/child', authJWT, childController.create);
 /**
  * @api {GET} /parent/children 사용자 자녀 전체 조회
  * @apiName 사용자 자녀 전체 조회
@@ -150,6 +172,7 @@ router.post('/child', authJWT, childController.add);
  * @apiSuccess (Response) {Boolean} body[can_read_score] 학생 악보 해석 가능 여부
  * @apiSuccess (Response) {String} body[created_At] 학생 추가 일자
  * @apiSuccess (Response) {String} body[updated_At] 학생 수정 일자
+ * @apiSuccess (Response) {List} body[Instruments] 학생이 뱅우고픈 악기
  * @apiSuccessExample {json} created success
  * HTTP/1.1 201 OK
  * {
@@ -167,7 +190,8 @@ router.post('/child', authJWT, childController.add);
  *         "createdAt": "2021-07-26 16:14:41",
  *         "updatedAt": "2021-07-26 16:14:41",
  *         "deletedAt": null,
- *         "parent_ID": "32a65940-eb91-11eb-94eb-1bd36ef54096"
+ *         "parent_ID": "32a65940-eb91-11eb-94eb-1bd36ef54096",
+ *         "Instruments": []
  *     }]
  * }
  *
@@ -221,6 +245,7 @@ router.get('/children', authJWT, childController.getAll);
  * @apiSuccess (Response) {Boolean} body[can_read_score] 학생 악보 해석 가능 여부
  * @apiSuccess (Response) {String} body[created_At] 학생 추가 일자
  * @apiSuccess (Response) {String} body[updated_At] 학생 수정 일자
+ * @apiSuccess (Response) {List} body[Instruments] 학생이 뱅우고픈 악기
  * @apiSuccessExample {json} created success
  * HTTP/1.1 201 OK
  * {
@@ -238,7 +263,8 @@ router.get('/children', authJWT, childController.getAll);
  *         "createdAt": "2021-07-26 16:14:41",
  *         "updatedAt": "2021-07-26 16:14:41",
  *         "deletedAt": null,
- *         "parent_ID": "32a65940-eb91-11eb-94eb-1bd36ef54096"
+ *         "parent_ID": "32a65940-eb91-11eb-94eb-1bd36ef54096",
+ *         "Instruments": []
  *     }
  * }
  *
@@ -293,13 +319,34 @@ router.get('/child', authJWT, childController.getOne);
  * @apiSuccess (Response) {Integer} statusCode 상태코드
  * @apiSuccess (Response) {Object} body Response body
  * @apiSuccess (Response) {Boolean} body[created] 자녀 정보 수정 여부
+ * @apiSuccess (Body) {Integer} body[age] 학생 나이
+ * @apiSuccess (Body) {String} body[name] 학생 이름
+ * @apiSuccess (Body) {String} body[phone_NO] 학생 핸드폰 번호
+ * @apiSuccess (Body) {String} body[full_address] 학생 주소지
+ * @apiSuccess (Body) {Boolean} body[has_instrument] 학생 악기 보유 여부
+ * @apiSuccess (Body) {Boolean} body[has_lesson_experience] 학생 레슨 경험 여부
+ * @apiSuccess (Body) {Boolean} body[can_read_score] 학생 악보 해석 가능 여부
+ * @apiSuccess (Body) {String} body[createdAt] 생성일
+ * @apiSuccess (Body) {String} body[updatedAt] 수정일
  * @apiSuccessExample {json} created success
  * HTTP/1.1 201 OK
  * {
  * "statusCode": 201,
  * "body": {
- *     updated: true
- *     }
+ *      "ID": "2c8e1730-ee86-11eb-b406-45085e755e02",
+        "name": "홍길동12",
+        "age": 20,
+        "gender": "M",
+        "phone_NO": "01012345678",
+        "has_instrument": true,
+        "full_address": "경기도 성남시 분당구 삼평동",
+        "has_lesson_experience": true,
+        "can_read_score": true,
+        "createdAt": "2021-07-27 11:56:00",
+        "updatedAt": "2021-07-27 11:56:00",
+        "deletedAt": null,
+        "parent_ID": "b7fd4190-ee7e-11eb-b6c5-ab1668841ae8"
+ *    }
  * }
  *
  * @apiError (ErrorCode) 400 Request Body Error response

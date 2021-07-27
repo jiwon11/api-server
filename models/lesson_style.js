@@ -17,7 +17,6 @@ export default class LessonStyle extends Model {
       },
       {
         sequelize,
-        modelName: 'LessonStyle',
         tableName: 'LESSON_STYLE_TB',
         freezeTableName: true,
         timestamps: true,

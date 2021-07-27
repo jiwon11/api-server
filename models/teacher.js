@@ -99,6 +99,7 @@ export default class Teacher extends Model {
     this.belongsToMany(models.LessonStyle, {
       onDelete: 'CASCADE',
       through: 'TEACHER_LESSON_STYLE',
+      as: 'TeacherLessonStyle',
       foreignKey: 'teacher_ID'
     });
     this.belongsToMany(models.District, {
