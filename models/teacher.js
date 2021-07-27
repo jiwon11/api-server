@@ -5,7 +5,7 @@ export default class Teacher extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
-        teacher_ID: {
+        ID: {
           type: DataTypes.UUID,
           defaultValue: DataTypes.UUIDV1,
           primaryKey: true,
@@ -14,6 +14,10 @@ export default class Teacher extends Model {
         name: {
           type: DataTypes.STRING,
           allowNull: false
+        },
+        address: {
+          type: DataTypes.STRING,
+          allowNull: true
         },
         gender: {
           type: DataTypes.CHAR(1),
@@ -38,6 +42,11 @@ export default class Teacher extends Model {
           type: DataTypes.BOOLEAN,
           allowNull: false,
           defaultValue: false
+        },
+        hope_sales_month: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          defaultValue: 0
         }
       },
       {
@@ -64,37 +73,37 @@ export default class Teacher extends Model {
     this.hasMany(models.CoverImg, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'teacher_ID'
+      sourceKey: 'ID'
     });
     this.hasMany(models.EducationLevel, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'teacher_ID'
+      sourceKey: 'ID'
     });
     this.hasMany(models.Career, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'teacher_ID'
+      sourceKey: 'ID'
     });
     this.hasMany(models.Account, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'teacher_ID'
+      sourceKey: 'ID'
     });
     this.hasMany(models.LessonPlace, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'teacher_ID'
+      sourceKey: 'ID'
     });
     this.hasMany(models.ForeignLanguage, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'teacher_ID'
+      sourceKey: 'ID'
     });
     this.hasMany(models.AvailableTime, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      sourceKey: 'teacher_ID'
+      sourceKey: 'ID'
     });
     this.belongsToMany(models.LessonStyle, {
       onDelete: 'CASCADE',
@@ -115,4 +124,27 @@ export default class Teacher extends Model {
   }
 
   /* CLASS-LEVEL FUNCTIONS */
+  static async getTeacherProfile(teacherId) {
+    const teacherRecord = await this.findOne({
+      where: { ID: teacherId },
+      attributes: { exclude: ['updatedAt', 'deletedAt'] }
+    });
+    const teacherUserInfo = await teacherRecord.getUser({ attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'deletedAt'] } });
+    const teacherCoverImgs = await teacherRecord.getCoverImgs({ attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] } });
+    const teacherCareers = await teacherRecord.getCareers({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt']
+      },
+      order: ['start_date']
+    });
+    const teacherHopeDistricts = await teacherRecord.getDistricts({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt']
+      },
+      through: {
+        attributes: []
+      }
+    });
+    return { teacher: { ...teacherRecord.dataValues, ...teacherUserInfo.dataValues }, coverImgs: teacherCoverImgs, careers: teacherCareers, hope_districts: teacherHopeDistricts };
+  }
 }

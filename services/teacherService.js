@@ -1,3 +1,75 @@
 import TeacherModel from '../models/teacher';
+import CoverImg from '../models/cover_img';
+import Career from '../models/career';
+import EducationLevel from '../models/education_level';
+export default class teacherService {
+  static async createProfile(userId, teacherDTO, coverImgDTO, performanceVideoDTO, careerDTO, hopeDistrictDTO) {
+    const createdTeacher = await TeacherModel.create({
+      ...teacherDTO,
+      ...{
+        user_ID: userId
+      }
+    });
+    await Promise.all(
+      coverImgDTO.map(coverImg =>
+        CoverImg.create({
+          name: coverImg.fieldname,
+          mime_type: coverImg.mimetype,
+          url: coverImg.location,
+          size: coverImg.size,
+          width: 0,
+          height: 0,
+          teacher_ID: createdTeacher.ID
+        })
+      )
+    );
+    await CoverImg.create({
+      name: 'performanceVideo',
+      mime_type: 'video/mp4',
+      url: performanceVideoDTO.url,
+      size: 0,
+      width: 0,
+      height: 0,
+      teacher_ID: createdTeacher.ID
+    });
+    await Promise.all(
+      careerDTO.map(career =>
+        Career.create({
+          ...career,
+          ...{ teacher_ID: createdTeacher.ID }
+        })
+      )
+    );
+    await createdTeacher.addDistricts(hopeDistrictDTO);
+    const teacherRecord = await TeacherModel.getTeacherProfile(createdTeacher.ID);
+    return { statusCode: 201, result: teacherRecord };
+  }
 
-export default class UserService {}
+  static async getProfile(targetTeacherId) {
+    const teacherRecord = await TeacherModel.getTeacherProfile(targetTeacherId);
+    return { statusCode: 201, result: teacherRecord };
+  }
+
+  static async uploadEduLevel(userId, eduImgFileDTO, eduLevelDTO) {
+    const teacherRecord = await TeacherModel.findOne({
+      where: {
+        user_ID: userId
+      }
+    });
+    await Promise.all(
+      eduLevelDTO.map(eduLevel =>
+        EducationLevel.create({
+          ...eduLevel,
+          ...{ teacher_ID: teacherRecord.ID, identification_image_url: eduImgFileDTO[eduLevelDTO.indexOf(eduLevel)].location }
+        })
+      )
+    );
+    const teacherEduLevelRecord = await teacherRecord.getEducationLevels();
+    return { statusCode: 201, result: teacherEduLevelRecord };
+  }
+
+  static async createCurriculum() {}
+  static async updateCurriculum() {}
+  static async createSchedule() {}
+  static async updateSchedule() {}
+}

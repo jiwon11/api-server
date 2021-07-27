@@ -46,9 +46,4 @@ export default class Instrument extends Model {
   /* CLASS-LEVEL FUNCTIONS */
 
   // Create a new user
-  static async create(args) {
-    // logic to create a user
-    // eslint-disable-next-line no-return-await
-    return await this.create(args);
-  }
 }

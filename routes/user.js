@@ -50,18 +50,12 @@ import * as userController from '../controllers/userController';
  * @apiHeader {String} Refresh 사용자 JWT refresh token key.
  * @apiParam (Body) {String="parent","teacher"} role 사용자가 설정한 역할
  * @apiParam (Body) {Object} data 사용자가 설정한 역할별 데이터
- * @apiParam (parent) {String} data[nickname] 학부모 닉네임
- * @apiParam (teacher) {String} data[name] 선생님 실명
- * @apiParam (teacher) {String="M","F","N"} [data[gender]] 선생님 실명
- * @apiParam (teacher) {String} [data[birthday]] 선생님 생년월일
- * @apiParam (teacher) {String} [data[introduction]] 선생님 소개글
- * @apiParam (teacher) {Boolean} [data[can_rental]] 선생님 악기 대여 가능 여부
  *
  * @apiExample {curl} curl
  *   curl -X POST /user/role \
  *        -H "Authorization: Bearer thisisjwtaccesstoken"\
  *        -H "Refresh: Bearer thisisjwtrefreshtoken"\
- *        -d '{"role":"parent", "data" : {"nickname" : "jiwon11"}}'
+ *        -d '{"role":"parent"}'
  *
  * @apiExample {node.js} node.js
  *   const axios = require('axios');
@@ -71,10 +65,7 @@ import * as userController from '../controllers/userController';
  *        url: '/user/role',
  *        headers: { 'Authorization': 'Bearer thisisjwtaccesstoken', "Refresh" : "thisisjwtrefreshtoken" }
  *        data: {
- *          'role': 'parent',
- *          'data': {
- *              "nickname" : "jiwon11"
- *            }
+ *          'role': 'parent'
  *        }
  *     });
  *     console.log('User role: ', response);

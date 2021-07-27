@@ -1,8 +1,26 @@
+import UserModel from '../models/user';
 import ParentModel from '../models/parent';
 import ChildModel from '../models/child';
-import childService from './childService';
 
 export default class parentService {
+  static async create(userId, parentDTO) {
+    try {
+      const createdParent = await ParentModel.create({
+        ...parentDTO,
+        ...{ user_ID: userId }
+      });
+
+      const parentRecord = await ParentModel.findByPk(createdParent.ID, { include: [UserModel, ChildModel] });
+      return {
+        statusCode: 201,
+        result: parentRecord
+      };
+    } catch (err) {
+      console.log(err);
+      return { statusCode: 500, result: err };
+    }
+  }
+
   static async get(userId) {
     const parentRecord = await ParentModel.findOne({
       where: {

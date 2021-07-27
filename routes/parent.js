@@ -6,6 +6,7 @@ import authJWT from '../middlewares/authJWT';
 
 // application Controllers for Routes
 import * as childController from '../controllers/childController';
+import * as parentController from '../controllers/parentController';
 /**
  * @apiDefine Error
  * @apiError (ErrorCode) 401 access token이 만료되지 않은경우
@@ -36,7 +37,87 @@ import * as childController from '../controllers/childController';
  *   message: "Server Error"
  * }
  */
-
+/**
+ * @api {POST} parent/ 학부모 프로필 등록
+ * @apiName 학부모 프로필 등록
+ * @apiDescription 학부모의 프로필을 등록하는 api입니다.
+ * @apiGroup Parent
+ * @apiVersion 1.0.0
+ * @apiPermission POST-parent
+ * @apiHeader {String} Authorization 사용자 JWT access token key.
+ * @apiHeader {String} Refresh 사용자 JWT refresh token key.
+ * @apiParam (Body) {String} nickname 닉네임
+ * @apiExample {curl} curl
+ *   curl -X POST /parent \
+ *         -H "Authorization: Bearer thisisjwtaccesstoken"\
+ *        -H "Refresh: Bearer thisisjwtrefreshtoken"\
+ *        -d '{"nickname": "jiwon11"}'
+ *
+ * @apiExample {node.js} node.js
+ *   const axios = require('axios');
+ *   try {
+ *      const response = await axios({
+ *        method: 'POST',
+ *        url: '/parent',
+ *        headers: { 'Authorization': 'Bearer thisisjwtaccesstoken', "Refresh" : "thisisjwtrefreshtoken" }
+ *        data: {
+                "nickname" : "jiwon11"
+            }
+ *     });
+ *     console.log('Parent: ', response);
+ *   } catch (error) {
+ *     console.error(error);
+ *   }
+ *
+ * @apiSuccess (Response) {Integer} statusCode 상태코드
+ * @apiSuccess (Response) {Object} body Response body
+ * @apiSuccess (Response) {String} body[nickname] 학부모 닉네임
+ * @apiSuccess (Response) {String} body[created_At] 학부모 생성 일자
+ * @apiSuccess (Response) {String} body[updated_At] 학부모 수정 일자
+ * @apiSuccess (Response) {String} User 학부모 사용자 정보
+ * @apiSuccess (Response) {String} Children 학부모 자녀 정보
+ * 
+ * @apiSuccessExample {json} created success
+ * HTTP/1.1 201 OK
+ * {
+ * "statusCode": 201,
+ * "body": {
+ *      "ID": "ce11d7b0-eeb1-11eb-9bbe-d1a0ca8b0150",
+ *      "nickname": "jiwon11",
+ *      "createdAt": "2021-07-27 17:08:19",
+ *      "updatedAt": "2021-07-27 17:08:19",
+ *      "deletedAt": null,
+ *      "user_ID": "fd452430-eeaa-11eb-ad37-87ed5c10f54c",
+ *      "User": {
+ *          "ID": "fd452430-eeaa-11eb-ad37-87ed5c10f54c",
+ *          "phone_NO": "01051849798",
+ *          "role": "parent",
+ *          "kakao_token": "",
+ *          "isActive": true,
+ *          "profile_img": "",
+ *          "createdAt": "2021-07-27 16:19:32",
+ *          "updatedAt": "2021-07-27 16:38:53",
+ *          "deletedAt": null
+ *      },
+ *      "Children": []
+ *  }
+ * }
+ *
+ * @apiError (ErrorCode) 400 Request Body Error response
+ * @apiErrorExample {json} 400 Error
+ * HTTP/1.1 400 Conflict
+ * {
+ *   message: `${typeof childDTO}는 유효하지 않는 데이터 형태입니다.`
+ * }
+ * @apiError (ErrorCode) 409 Role Error response
+ * @apiErrorExample {json} 409 Error
+ * HTTP/1.1 409 Conflict
+ * {
+ *   message: "사용자의 역할로는 자녀를 등록할 수 없습니다."
+ * }
+ * @apiUse Error
+ */
+router.post('/', authJWT, parentController.create);
 /**
  * @api {POST} /parent/child 사용자 자녀 등록
  * @apiName 사용자 자녀 등록
@@ -94,7 +175,7 @@ import * as childController from '../controllers/childController';
  * @apiSuccess (Response) {Boolean} body[can_read_score] 학생 악보 해석 가능 여부
  * @apiSuccess (Response) {String} body[created_At] 학생 추가 일자
  * @apiSuccess (Response) {String} body[updated_At] 학생 수정 일자
- * @apiSuccess (Response) {List} body[Instruments] 학생이 뱅우고픈 악기
+ * @apiSuccess (Response) {List} body[Instruments] 학생이 배우고픈 악기
  * @apiSuccessExample {json} created success
  * HTTP/1.1 201 OK
  * {
@@ -172,7 +253,7 @@ router.post('/child', authJWT, childController.create);
  * @apiSuccess (Response) {Boolean} body[can_read_score] 학생 악보 해석 가능 여부
  * @apiSuccess (Response) {String} body[created_At] 학생 추가 일자
  * @apiSuccess (Response) {String} body[updated_At] 학생 수정 일자
- * @apiSuccess (Response) {List} body[Instruments] 학생이 뱅우고픈 악기
+ * @apiSuccess (Response) {List} body[Instruments] 학생이 배우고픈 악기
  * @apiSuccessExample {json} created success
  * HTTP/1.1 201 OK
  * {
@@ -245,7 +326,7 @@ router.get('/children', authJWT, childController.getAll);
  * @apiSuccess (Response) {Boolean} body[can_read_score] 학생 악보 해석 가능 여부
  * @apiSuccess (Response) {String} body[created_At] 학생 추가 일자
  * @apiSuccess (Response) {String} body[updated_At] 학생 수정 일자
- * @apiSuccess (Response) {List} body[Instruments] 학생이 뱅우고픈 악기
+ * @apiSuccess (Response) {List} body[Instruments] 학생이 배우고픈 악기
  * @apiSuccessExample {json} created success
  * HTTP/1.1 201 OK
  * {

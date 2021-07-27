@@ -20,21 +20,9 @@ export default class UserService {
       const userRecord = await UserModel.findOne({ where: { ID: userId } });
       if (userRecord) {
         await userRecord.update({ role: roleDTO.role });
-        const userRoleData = {
-          ...roleDTO.data,
-          ...{ user_ID: userId }
-        };
-        console.log(userRoleData);
-        if (roleDTO.role === 'parent') {
-          await ParentModel.create(userRoleData);
-        } else if (roleDTO.role === 'teacher') {
-          await TeacherModel.create(userRoleData);
-        }
-        const userRoleRecord = await UserModel.getUserRole(userId);
-        console.log(userRoleData);
         return {
           statusCode: 200,
-          result: userRoleRecord
+          result: userRecord
         };
       } else {
         return {

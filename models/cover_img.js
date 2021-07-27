@@ -55,16 +55,11 @@ export default class CoverImg extends Model {
     this.belongsTo(models.Teacher, {
       onDelete: 'CASCADE',
       foreignKey: 'teacher_ID',
-      targetKey: 'teacher_ID'
+      targetKey: 'ID'
     });
   }
 
   /* CLASS-LEVEL FUNCTIONS */
 
   // Create a new user
-  static async create(args) {
-    // logic to create a user
-    // eslint-disable-next-line no-return-await
-    return await this.create(args);
-  }
 }
