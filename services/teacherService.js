@@ -51,21 +51,28 @@ export default class teacherService {
   }
 
   static async uploadEduLevel(userId, eduImgFileDTO, eduLevelDTO) {
-    const teacherRecord = await TeacherModel.findOne({
-      where: {
-        user_ID: userId
+    try {
+      const teacherRecord = await TeacherModel.findOne({
+        where: {
+          user_ID: userId
+        }
+      });
+      if (eduImgFileDTO.length !== eduLevelDTO.length) {
+        return { statusCode: 400, result: `학력 정보와 인증 이미지의 개수가 다릅니다. 학력 정보 개수 : ${eduLevelDTO.length}, 인증 이미지 개수 : ${eduImgFileDTO.length}` };
       }
-    });
-    await Promise.all(
-      eduLevelDTO.map(eduLevel =>
-        EducationLevel.create({
-          ...eduLevel,
-          ...{ teacher_ID: teacherRecord.ID, identification_image_url: eduImgFileDTO[eduLevelDTO.indexOf(eduLevel)].location }
-        })
-      )
-    );
-    const teacherEduLevelRecord = await teacherRecord.getEducationLevels();
-    return { statusCode: 201, result: teacherEduLevelRecord };
+      await Promise.all(
+        eduLevelDTO.map(eduLevel =>
+          EducationLevel.create({
+            ...eduLevel,
+            ...{ teacher_ID: teacherRecord.ID, identification_image_url: eduImgFileDTO[eduLevelDTO.indexOf(eduLevel)].location }
+          })
+        )
+      );
+      const teacherEduLevelRecord = await teacherRecord.getEducationLevels();
+      return { statusCode: 201, result: teacherEduLevelRecord };
+    } catch (err) {
+      return { statusCode: 500, result: err };
+    }
   }
 
   static async createCurriculum() {}

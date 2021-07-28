@@ -121,6 +121,11 @@ export default class Teacher extends Model {
       through: 'TEACHER_INSTRUMENT',
       foreignKey: 'teacher_ID'
     });
+    this.belongsToMany(models.CustomRecommend, {
+      onDelete: 'CASCADE',
+      through: 'RECOMMENDED_TEACHER_TB',
+      foreignKey: 'teacher_ID'
+    });
   }
 
   /* CLASS-LEVEL FUNCTIONS */

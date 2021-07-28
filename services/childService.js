@@ -18,7 +18,7 @@ export default class childService {
         result: childRecord
       };
     } catch (err) {
-      console.log(err.errors);
+      console.log(err);
       return { statusCode: 500, result: err };
     }
   }
@@ -31,7 +31,7 @@ export default class childService {
         result: childRecords
       };
     } catch (err) {
-      console.log(err.errors);
+      console.log(err);
       return { statusCode: 500, result: err };
     }
   }
@@ -65,7 +65,7 @@ export default class childService {
         result: childRecord
       };
     } catch (err) {
-      console.log(err.errors);
+      console.log(err);
       return { statusCode: 500, result: err };
     }
   }

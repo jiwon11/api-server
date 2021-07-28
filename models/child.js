@@ -42,6 +42,10 @@ export default class Child extends Model {
         can_read_score: {
           type: DataTypes.BOOLEAN,
           allowNull: false
+        },
+        object: {
+          type: DataTypes.TEXT,
+          allowNull: true
         }
       },
       {
@@ -69,6 +73,11 @@ export default class Child extends Model {
       onDelete: 'CASCADE',
       through: 'HOPE_INSTRUMENT',
       foreignKey: 'child_ID'
+    });
+    this.hasMany(models.CustomRecommend, {
+      onDelete: 'CASCADE',
+      foreignKey: 'child_ID',
+      sourceKey: 'ID'
     });
   }
 

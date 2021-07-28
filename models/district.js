@@ -50,6 +50,11 @@ export default class District extends Model {
       through: 'RESIDENCE',
       foreignKey: 'district_ID'
     });
+    this.belongsToMany(models.CustomRecommend, {
+      onDelete: 'CASCADE',
+      through: 'HOPE_RECOMMENDED_DISTRICT_TB',
+      foreignKey: 'district_ID'
+    });
   }
 
   /* CLASS-LEVEL FUNCTIONS */

@@ -12,6 +12,8 @@ import userRouter from '../routes/user';
 import authRouter from '../routes/auth';
 import parentRouter from '../routes/parent';
 import teacherRouter from '../routes/teacher';
+import tagRouter from '../routes/tag';
+import recommendRouter from '../routes/recommend';
 
 // application Controllers for Routes
 import { pageNotFoundError, respondInternalError } from '../controllers/errorController';
@@ -34,6 +36,8 @@ export default async app => {
   app.use('/auth', authRouter);
   app.use('/parent', parentRouter);
   app.use('/teacher', teacherRouter);
+  app.use('/tag', tagRouter);
+  app.use('/recommend', recommendRouter);
   // custom Error controllers
   app.use(pageNotFoundError);
   app.use(respondInternalError);

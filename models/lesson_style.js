@@ -41,6 +41,11 @@ export default class LessonStyle extends Model {
       through: 'HOPE_LESSON_STYLE',
       foreignKey: 'lesson_style_ID'
     });
+    this.belongsToMany(models.CustomRecommend, {
+      onDelete: 'CASCADE',
+      through: 'HOPE_RECOMMENDED_STYLE_TB',
+      foreignKey: 'lesson_style_ID'
+    });
   }
 
   /* CLASS-LEVEL FUNCTIONS */

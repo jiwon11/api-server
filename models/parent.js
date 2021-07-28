@@ -53,6 +53,11 @@ export default class Parent extends Model {
       through: 'RESIDENCE',
       foreignKey: 'parent_ID'
     });
+    this.hasMany(models.CustomRecommend, {
+      onDelete: 'CASCADE',
+      foreignKey: 'parent_ID',
+      sourceKey: 'ID'
+    });
   }
 
   /* CLASS-LEVEL FUNCTIONS */

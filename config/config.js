@@ -1,8 +1,8 @@
 'user strict';
 
-import dotenv from 'dotenv';
+require('@babel/register');
 
-dotenv.config();
+require('dotenv').config();
 
 const { env } = process;
 const development = {
@@ -94,4 +94,4 @@ const production = {
   */
 };
 
-export default { development, production, test };
+module.exports = { development, production, test };

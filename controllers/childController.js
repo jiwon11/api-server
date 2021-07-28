@@ -17,7 +17,7 @@ export const getAll = async function (req, res) {
       }
     }
   } catch (err) {
-    return res.jsonResult(500, result.errors);
+    return res.jsonResult(500, err);
   }
 };
 
