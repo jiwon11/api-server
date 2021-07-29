@@ -23,7 +23,7 @@ export default class districtService {
             }
           ]
         },
-        attributes: ['ID', 'si_do', 'si_gun_gu', 'eup_myeon_dong'],
+        attributes: DistrictModel.getAttributes,
         limit: limit,
         offset: offset
       });
@@ -36,7 +36,7 @@ export default class districtService {
 
   static async getAll(limit, offset) {
     try {
-      const districtRecord = await DistrictModel.findAll({ attributes: ['ID', 'si_do', 'si_gun_gu', 'eup_myeon_dong'], limit: limit, offset: offset });
+      const districtRecord = await DistrictModel.findAll({ attributes: DistrictModel.getAttributes, limit: limit, offset: offset });
       return { statusCode: 200, result: districtRecord };
     } catch (err) {
       console.log(err);

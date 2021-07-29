@@ -27,6 +27,10 @@ export default class ForeignLanguage extends Model {
       }
     );
   }
+
+  static get getAttributes() {
+    return ['name'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

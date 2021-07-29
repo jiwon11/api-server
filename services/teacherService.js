@@ -2,6 +2,7 @@ import TeacherModel from '../models/teacher';
 import CoverImg from '../models/cover_img';
 import Career from '../models/career';
 import EducationLevel from '../models/education_level';
+
 export default class teacherService {
   static async createProfile(userId, teacherDTO, coverImgDTO, performanceVideoDTO, careerDTO, hopeDistrictDTO) {
     const createdTeacher = await TeacherModel.create({
@@ -10,6 +11,7 @@ export default class teacherService {
         user_ID: userId
       }
     });
+    console.time('createCoverImg');
     await Promise.all(
       coverImgDTO.map(coverImg =>
         CoverImg.create({
@@ -23,6 +25,8 @@ export default class teacherService {
         })
       )
     );
+    console.timeEnd('createCoverImg');
+    console.time('createPerformanceVideo');
     await CoverImg.create({
       name: 'performanceVideo',
       mime_type: 'video/mp4',
@@ -32,6 +36,8 @@ export default class teacherService {
       height: 0,
       teacher_ID: createdTeacher.ID
     });
+    console.timeEnd('createPerformanceVideo');
+    console.time('createCareer');
     await Promise.all(
       careerDTO.map(career =>
         Career.create({
@@ -40,14 +46,32 @@ export default class teacherService {
         })
       )
     );
+    console.timeEnd('createCareer');
+    console.time('addDistricts');
     await createdTeacher.addDistricts(hopeDistrictDTO);
+    console.timeEnd('addDistricts');
     const teacherRecord = await TeacherModel.getTeacherProfile(createdTeacher.ID);
     return { statusCode: 201, result: teacherRecord };
   }
 
+  static async getAll(limit, offset) {
+    try {
+      const teacherRecord = await TeacherModel.getAll(limit, offset);
+      return { statusCode: 200, result: teacherRecord };
+    } catch (err) {
+      console.log(err);
+      return { statusCode: 500, result: err };
+    }
+  }
+
   static async getProfile(targetTeacherId) {
-    const teacherRecord = await TeacherModel.getTeacherProfile(targetTeacherId);
-    return { statusCode: 201, result: teacherRecord };
+    try {
+      const teacherRecord = await TeacherModel.getTeacherProfile(targetTeacherId);
+      return { statusCode: 200, result: teacherRecord };
+    } catch (err) {
+      console.log(err);
+      return { statusCode: 500, result: err };
+    }
   }
 
   static async uploadEduLevel(userId, eduImgFileDTO, eduLevelDTO) {

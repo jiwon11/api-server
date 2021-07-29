@@ -14,5 +14,7 @@ router.post('/profile', authJWT, upload.fields([{ name: 'upperBody' }, { name: '
 
 router.post('/profile/eduLevel', authJWT, upload.array('eduLevel'), teacherController.uploadEduLevel);
 
+router.get('/', authJWT, teacherController.getAll);
+
 router.get('/profile', authJWT, teacherController.getProfile);
 export default router;

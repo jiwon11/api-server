@@ -29,6 +29,22 @@ export default class Parent extends Model {
       }
     );
   }
+  static getAttributes(included) {
+    let associateTable;
+    if (included === 'included') {
+      associateTable = 'Parent->';
+    } else if (included === 'self') {
+      associateTable = '';
+    }
+    return [
+      'nickname',
+      [pkg.literal('`' + associateTable + 'User`.`profile_img`'), 'profile_img'],
+      [pkg.literal('`' + associateTable + 'User`.`phone_NO`'), 'phone_NO'],
+      [pkg.literal('`' + associateTable + 'User`.`kakao_token`'), 'kakao_token'],
+      [pkg.literal('`' + associateTable + 'User`.`ID`'), 'user_ID']
+    ];
+  }
+
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

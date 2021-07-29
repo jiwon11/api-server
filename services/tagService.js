@@ -11,7 +11,7 @@ export default class TagService {
 
   static async getAll(TagModel) {
     try {
-      const tagRecord = await TagModel.findAll({ attributes: ['ID', 'name'] });
+      const tagRecord = await TagModel.findAll({ attributes: TagModel.getAttributes });
       return { statusCode: 200, result: tagRecord };
     } catch (err) {
       console.log(err);

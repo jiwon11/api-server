@@ -26,6 +26,10 @@ export default class LessonPlace extends Model {
       }
     );
   }
+
+  static get getAttributes() {
+    return ['name'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

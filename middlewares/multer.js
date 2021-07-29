@@ -15,6 +15,7 @@ export const upload = multer(
       s3: new AWS.S3(),
       bucket: 'tuninig-teacher-profile',
       ACL: 'public-read-write',
+      contentType: multerS3.AUTO_CONTENT_TYPE,
       key: function (req, file, cb) {
         cb(null, `original/${+Date.now()}${path.basename(file.originalname.replace(/ /gi, ''))}`);
       }

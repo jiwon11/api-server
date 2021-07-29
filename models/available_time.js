@@ -41,6 +41,9 @@ export default class AvailableTime extends Model {
       }
     );
   }
+  static get getAttributes() {
+    return ['day', 'start_time', 'end_time'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

@@ -43,6 +43,10 @@ export default class EducationLevel extends Model {
       }
     );
   }
+
+  static get getAttributes() {
+    return ['course', 'school_name', 'subject', 'period'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

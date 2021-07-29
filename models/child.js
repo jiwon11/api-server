@@ -59,6 +59,10 @@ export default class Child extends Model {
       }
     );
   }
+
+  static get getAttributes() {
+    return ['ID', 'name', 'age', 'gender', 'has_instrument', 'full_address', 'has_lesson_experience', 'can_read_score', 'object'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

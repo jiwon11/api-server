@@ -26,6 +26,9 @@ export default class LessonStyle extends Model {
       }
     );
   }
+  static get getAttributes() {
+    return ['name'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

@@ -23,9 +23,16 @@ export default class parentService {
 
   static async get(userId) {
     const parentRecord = await ParentModel.findOne({
+      attributes: ParentModel.getAttributes('self'),
       where: {
         user_ID: userId
-      }
+      },
+      include: [
+        {
+          model: UserModel,
+          attributes: []
+        }
+      ]
     });
     if (parentRecord) {
       return {

@@ -1,6 +1,9 @@
 import pkg from 'sequelize';
 const { Model } = pkg;
-
+import UserModel from './user';
+import CoverImgModel from './cover_img';
+import CareerModel from './career';
+import DistrictModel from './district';
 export default class Teacher extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
@@ -60,6 +63,27 @@ export default class Teacher extends Model {
         collate: 'utf8mb4_unicode_ci'
       }
     );
+  }
+  static getAttributes(included) {
+    let associateTable;
+    if (included === 'included') {
+      associateTable = 'Teachers->';
+    } else if (included === 'self') {
+      associateTable = '';
+    }
+    return [
+      'ID',
+      'name',
+      'address',
+      'gender',
+      'birthday',
+      'introduction',
+      'can_rental',
+      [pkg.literal('`' + associateTable + 'User`.`profile_img`'), 'profile_img'],
+      [pkg.literal('`' + associateTable + 'User`.`phone_NO`'), 'phone_NO'],
+      [pkg.literal('`' + associateTable + 'User`.`kakao_token`'), 'kakao_token'],
+      [pkg.literal('`' + associateTable + 'User`.`ID`'), 'user_ID']
+    ];
   }
   /* RELATIONSHIPS */
 
@@ -129,27 +153,59 @@ export default class Teacher extends Model {
   }
 
   /* CLASS-LEVEL FUNCTIONS */
+  static async getAll(limit, offset) {
+    const teacherRecord = await this.findAll({
+      where: {
+        certificated_edu: false
+      },
+      attributes: this.getAttributes('self'),
+      subQuery: false,
+      include: [
+        {
+          model: UserModel,
+          attributes: []
+        },
+        {
+          model: CoverImgModel,
+          attributes: CoverImgModel.getAttributes,
+          where: {
+            name: 'upperBody'
+          }
+        }
+      ],
+      limit: limit,
+      offset: offset
+    });
+    return teacherRecord;
+  }
+
   static async getTeacherProfile(teacherId) {
     const teacherRecord = await this.findOne({
       where: { ID: teacherId },
-      attributes: { exclude: ['updatedAt', 'deletedAt'] }
+      attributes: this.getAttributes('self'),
+      include: [
+        {
+          model: UserModel,
+          attributes: []
+        },
+        {
+          model: CoverImgModel,
+          attributes: CoverImgModel.getAttributes
+        },
+        {
+          model: CareerModel,
+          attributes: CareerModel.getAttributes,
+          order: ['start_date']
+        },
+        {
+          model: DistrictModel,
+          attributes: DistrictModel.getAttributes,
+          through: {
+            attributes: []
+          }
+        }
+      ]
     });
-    const teacherUserInfo = await teacherRecord.getUser({ attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'deletedAt'] } });
-    const teacherCoverImgs = await teacherRecord.getCoverImgs({ attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] } });
-    const teacherCareers = await teacherRecord.getCareers({
-      attributes: {
-        exclude: ['createdAt', 'updatedAt', 'deletedAt']
-      },
-      order: ['start_date']
-    });
-    const teacherHopeDistricts = await teacherRecord.getDistricts({
-      attributes: {
-        exclude: ['createdAt', 'updatedAt', 'deletedAt']
-      },
-      through: {
-        attributes: []
-      }
-    });
-    return { teacher: { ...teacherRecord.dataValues, ...teacherUserInfo.dataValues }, coverImgs: teacherCoverImgs, careers: teacherCareers, hope_districts: teacherHopeDistricts };
+    return teacherRecord;
   }
 }

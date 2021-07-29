@@ -35,6 +35,9 @@ export default class District extends Model {
       }
     );
   }
+  static get getAttributes() {
+    return ['ID', 'si_do', 'si_gun_gu', 'eup_myeon_dong'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

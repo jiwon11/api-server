@@ -41,6 +41,10 @@ export default class Career extends Model {
       }
     );
   }
+
+  static get getAttributes() {
+    return ['category', 'description', 'start_date', 'end_date'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

@@ -47,6 +47,9 @@ export default class CoverImg extends Model {
       }
     );
   }
+  static get getAttributes() {
+    return ['ID', 'name', 'url'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

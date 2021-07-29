@@ -63,6 +63,10 @@ export default class User extends Model {
       }
     );
   }
+
+  static get getAttributes() {
+    return ['phone_NO', 'kakao_token', 'profile_img'];
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars

@@ -31,9 +31,22 @@ export const uploadEduLevel = async function (req, res) {
   }
 };
 
+export const getAll = async function (req, res) {
+  try {
+    const userId = req.user.ID;
+    const userRole = req.user.role;
+    const limit = parseInt(req.query.limit);
+    const offset = parseInt(req.query.offset);
+    const { statusCode, result } = await teacherService.getAll(limit, offset);
+    return res.jsonResult(statusCode, result);
+  } catch (err) {
+    console.log(err);
+    return res.jsonResult(500, err);
+  }
+};
+
 export const getProfile = async function (req, res) {
   try {
-    console.log(req.user);
     const userId = req.user.ID;
     const userRole = req.user.role;
     const targetTeacherId = req.query.id;

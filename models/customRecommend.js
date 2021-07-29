@@ -4,6 +4,7 @@ import DistrictModel from './district';
 import LessonStyleModel from './lesson_style';
 import ParentModel from './parent';
 import TeacherModel from './teacher';
+import UserModel from './user';
 const { Model } = pkg;
 
 export default class CustomRecommend extends Model {
@@ -18,6 +19,10 @@ export default class CustomRecommend extends Model {
         cost: {
           type: DataTypes.STRING(20),
           allowNull: false
+        },
+        has_confirm: {
+          type: DataTypes.BOOLEAN,
+          defaultValue: false
         }
       },
       {
@@ -31,6 +36,10 @@ export default class CustomRecommend extends Model {
         collate: 'utf8mb4_unicode_ci'
       }
     );
+  }
+
+  static get getAttributes() {
+    return ['ID', 'cost', 'has_confirm', 'createdAt'];
   }
   /* RELATIONSHIPS */
 
@@ -65,42 +74,67 @@ export default class CustomRecommend extends Model {
   /* CLASS-LEVEL FUNCTIONS */
 
   // Create a new user
-  static async getRequestRecommend(customRecommendId) {
-    const customRecommendRecord = await this.findOne({
-      where: { ID: customRecommendId },
-      attributes: { exclude: ['updatedAt', 'deletedAt'] },
-      include: [
-        {
-          model: ParentModel,
-          attributes: { exclude: ['updatedAt', 'deletedAt'] }
-        },
-        {
-          model: ChildModel,
-          attributes: { exclude: ['updatedAt', 'deletedAt'] }
-        },
-        {
-          model: DistrictModel,
-          attributes: ['si_do', 'si_gun_gu', 'eup_myeon_dong'],
-          through: {
-            attributes: []
+  static async getRequestRecommend(customRecommendId, limit = 1, offset = 0) {
+    try {
+      const customRecommendRecord = await this.findAll({
+        logging: true,
+        where: { ID: customRecommendId },
+        attributes: this.getAttributes,
+        limit: limit,
+        offset: offset,
+        order: [['createdAt', 'DESC']],
+        include: [
+          {
+            model: ParentModel,
+            attributes: ParentModel.getAttributes('included'),
+            include: [
+              {
+                model: UserModel,
+                attributes: []
+              }
+            ]
+          },
+          {
+            model: ChildModel,
+            attributes: ChildModel.getAttributes
+          },
+          {
+            model: DistrictModel,
+            attributes: DistrictModel.getAttributes,
+            through: {
+              attributes: []
+            }
+          },
+          {
+            model: LessonStyleModel,
+            attributes: LessonStyleModel.getAttributes,
+            through: {
+              attributes: []
+            }
+          },
+          {
+            model: TeacherModel,
+            attributes: TeacherModel.getAttributes('included'),
+            include: [
+              {
+                model: UserModel,
+                attributes: []
+              }
+            ],
+            through: {
+              attributes: []
+            }
           }
-        },
-        {
-          model: LessonStyleModel,
-          attributes: ['name'],
-          through: {
-            attributes: []
-          }
-        },
-        {
-          model: TeacherModel,
-          attributes: { exclude: ['updatedAt', 'deletedAt'] },
-          through: {
-            attributes: []
-          }
-        }
-      ]
-    });
-    return customRecommendRecord;
+        ]
+      });
+      if (typeof customRecommendId === 'object') {
+        return customRecommendRecord;
+      } else {
+        return customRecommendRecord[0];
+      }
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
   }
 }
