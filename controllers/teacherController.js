@@ -7,8 +7,8 @@ export const createProfile = async function (req, res) {
     const imgFileDTO = req.files;
     const coverImgDTO = Object.values(imgFileDTO).flat();
     const performanceVideoDTO = JSON.parse(req.body.performanceVideo);
-    const careerDTO = JSON.parse(req.body.career);
-    const hopeDistrictDTO = JSON.parse(req.body.hopeDistrict);
+    const careerDTO = JSON.parse(req.body.careers);
+    const hopeDistrictDTO = JSON.parse(req.body.hopeDistricts);
     const teacherDTO = JSON.parse(req.body.profile);
     const { statusCode, result } = await teacherService.createProfile(userId, teacherDTO, coverImgDTO, performanceVideoDTO, careerDTO, hopeDistrictDTO);
     return res.jsonResult(statusCode, result);

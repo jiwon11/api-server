@@ -1,6 +1,8 @@
 import pkg from 'sequelize';
 const { Model } = pkg;
-
+import UserModel from './user';
+import ChildModel from './child';
+import InstrumentModel from './instrument';
 export default class Parent extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
@@ -37,6 +39,7 @@ export default class Parent extends Model {
       associateTable = '';
     }
     return [
+      'ID',
       'nickname',
       [pkg.literal('`' + associateTable + 'User`.`profile_img`'), 'profile_img'],
       [pkg.literal('`' + associateTable + 'User`.`phone_NO`'), 'phone_NO'],
@@ -77,4 +80,30 @@ export default class Parent extends Model {
   }
 
   /* CLASS-LEVEL FUNCTIONS */
+  static async get(parentId) {
+    const parentRecord = await this.findOne({
+      attributes: this.getAttributes('self'),
+      subQuery: false,
+      where: {
+        ID: parentId
+      },
+      include: [
+        {
+          model: UserModel,
+          attributes: []
+        },
+        {
+          model: ChildModel,
+          attributes: ChildModel.getAttributes,
+          include: [
+            {
+              model: InstrumentModel,
+              attributes: InstrumentModel.getAttributes
+            }
+          ]
+        }
+      ]
+    });
+    return parentRecord;
+  }
 }

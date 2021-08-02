@@ -22,11 +22,17 @@ export default class EducationLevel extends Model {
           type: DataTypes.STRING(20),
           allowNull: false
         },
-        period: {
-          type: DataTypes.STRING(20),
-          allowNull: false
+        start_date: {
+          type: DataTypes.DATEONLY,
+          allowNull: false,
+          defaultValue: sequelize.NOW
         },
-        identification_image_url: {
+        end_date: {
+          type: DataTypes.DATEONLY,
+          allowNull: false,
+          defaultValue: sequelize.NOW
+        },
+        certificate_img: {
           type: DataTypes.STRING(300),
           allowNull: false
         }
@@ -45,7 +51,7 @@ export default class EducationLevel extends Model {
   }
 
   static get getAttributes() {
-    return ['course', 'school_name', 'subject', 'period'];
+    return ['course', 'school_name', 'subject', 'start_date', 'end_date', 'certificate_img'];
   }
   /* RELATIONSHIPS */
 

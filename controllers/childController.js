@@ -13,7 +13,7 @@ export const getAll = async function (req, res) {
         return res.jsonResult(parentData.statusCode, parentData.result);
       } else {
         const childrenData = await childService.getAll(parentData.result.ID);
-        return res.jsonResult(childrenData.statusCode, childrenData.result);
+        return res.jsonResult(childrenData.statusCode, { children: childrenData.result });
       }
     }
   } catch (err) {

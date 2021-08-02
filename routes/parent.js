@@ -9,6 +9,7 @@ import * as childController from '../controllers/childController';
 import * as parentController from '../controllers/parentController';
 
 router.post('/', authJWT, parentController.create);
+router.get('/', authJWT, parentController.get);
 
 router.post('/child', authJWT, childController.create);
 

@@ -10,7 +10,7 @@ export default class parentService {
         ...{ user_ID: userId }
       });
 
-      const parentRecord = await ParentModel.findByPk(createdParent.ID, { include: [UserModel, ChildModel] });
+      const parentRecord = await ParentModel.get(createdParent.ID);
       return {
         statusCode: 201,
         result: parentRecord
@@ -21,19 +21,8 @@ export default class parentService {
     }
   }
 
-  static async get(userId) {
-    const parentRecord = await ParentModel.findOne({
-      attributes: ParentModel.getAttributes('self'),
-      where: {
-        user_ID: userId
-      },
-      include: [
-        {
-          model: UserModel,
-          attributes: []
-        }
-      ]
-    });
+  static async get(parentId) {
+    const parentRecord = await ParentModel.get(parentId);
     if (parentRecord) {
       return {
         statusCode: 200,
@@ -68,7 +57,7 @@ export default class parentService {
     try {
       const editData = parentEditDTO;
       await ParentModel.update(editData, { where: { ID: parentId } });
-      const updatedParentRecord = await ParentModel.findOne({ where: { ID: parentId } });
+      const updatedParentRecord = await ParentModel.get(parentId);
       return {
         statusCode: 201,
         result: updatedParentRecord

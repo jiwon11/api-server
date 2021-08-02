@@ -39,6 +39,7 @@ export default class childService {
   static async getAll(parentId) {
     try {
       const childRecords = await ChildModel.findAll({
+        attributes: ChildModel.getAttributes,
         where: {
           parent_ID: parentId
         },

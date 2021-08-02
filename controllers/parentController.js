@@ -12,3 +12,14 @@ export const create = async function (req, res) {
     return res.jsonResult(500, err);
   }
 };
+
+export const get = async function (req, res) {
+  try {
+    const parentId = req.query.id;
+    const { statusCode, result } = await parentService.get(parentId);
+    return res.jsonResult(statusCode, result);
+  } catch (err) {
+    console.log(err);
+    return res.jsonResult(500, err);
+  }
+};

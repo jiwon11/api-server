@@ -12,7 +12,7 @@ import * as teacherController from '../controllers/teacherController';
 
 router.post('/profile', authJWT, upload.fields([{ name: 'upperBody' }, { name: 'wholeBody' }, { name: 'performance' }, { name: 'lesson' }]), teacherController.createProfile);
 
-router.post('/profile/eduLevel', authJWT, upload.array('eduLevel'), teacherController.uploadEduLevel);
+router.post('/profile/eduLevel', authJWT, upload.array('certificate_img'), teacherController.uploadEduLevel);
 
 router.get('/', authJWT, teacherController.getAll);
 
