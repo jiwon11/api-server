@@ -12,7 +12,7 @@ export default class childService {
         ...{ parent_ID: parentRecord.ID }
       });
       await newChildRecord.addInstruments(childDTO.hope_instrument);
-      const childRecord = await ChildModel.findByPk(newChildRecord.ID, { include: [{ model: InstrumentModel }] });
+      const childRecord = await ChildModel.findByPk(newChildRecord.ID, { attributes: ChildModel.getAttributes, include: [{ model: InstrumentModel }] });
       return {
         statusCode: 201,
         result: childRecord
@@ -25,7 +25,10 @@ export default class childService {
 
   static async getOne(childId) {
     try {
-      const childRecords = await ChildModel.findByPk(childId, { include: [{ model: InstrumentModel }] });
+      const childRecords = await ChildModel.findByPk(childId, {
+        attributes: ChildModel.getAttributes,
+        include: [{ model: InstrumentModel }]
+      });
       return {
         statusCode: 200,
         result: childRecords

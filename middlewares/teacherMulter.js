@@ -13,11 +13,13 @@ export const upload = multer(
   {
     storage: multerS3({
       s3: new AWS.S3(),
-      bucket: 'tuninig-teacher-profile',
+      bucket: 'tuning-app',
       ACL: 'public-read-write',
       contentType: multerS3.AUTO_CONTENT_TYPE,
       key: function (req, file, cb) {
-        cb(null, `original/${+Date.now()}${path.basename(file.originalname.replace(/ /gi, ''))}`);
+        const splitPath = req.url.split('/');
+        console.log(splitPath);
+        cb(null, `${req.baseUrl.replace('/', '')}/${splitPath[1]}/${file.fieldname}/${+Date.now()}${path.basename(file.originalname.replace(/ /gi, ''))}`);
       }
     })
   },

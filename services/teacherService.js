@@ -88,11 +88,11 @@ export default class teacherService {
         eduLevelDTO.map(eduLevel =>
           EducationLevel.create({
             ...eduLevel,
-            ...{ teacher_ID: teacherRecord.ID, identification_image_url: eduImgFileDTO[eduLevelDTO.indexOf(eduLevel)].location }
+            ...{ teacher_ID: teacherRecord.ID, certificate_img: eduImgFileDTO[eduLevelDTO.indexOf(eduLevel)].location }
           })
         )
       );
-      const teacherEduLevelRecord = await teacherRecord.getEducationLevels();
+      const teacherEduLevelRecord = await teacherRecord.getEducationLevels({ attributes: EducationLevel.getAttributes });
       return { statusCode: 201, result: teacherEduLevelRecord };
     } catch (err) {
       return { statusCode: 500, result: err };

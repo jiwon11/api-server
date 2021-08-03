@@ -1,5 +1,5 @@
 import express from 'express';
-import { upload } from '../middlewares/multer';
+import { upload } from '../middlewares/teacherMulter';
 import authJWT from '../middlewares/authJWT';
 
 var router = express.Router();

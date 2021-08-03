@@ -22,7 +22,7 @@ export const uploadEduLevel = async function (req, res) {
   try {
     const userId = req.user.ID;
     const eduImgFileDTO = req.files;
-    const eduLevelDTO = JSON.parse(req.body.eduLevel);
+    const eduLevelDTO = JSON.parse(req.body.eduLevels);
     const { statusCode, result } = await teacherService.uploadEduLevel(userId, eduImgFileDTO, eduLevelDTO);
     return res.jsonResult(statusCode, result);
   } catch (err) {

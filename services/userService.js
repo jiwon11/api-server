@@ -21,7 +21,7 @@ export default class UserService {
       if (userRecord) {
         await userRecord.update({ role: roleDTO.role });
         return {
-          statusCode: 200,
+          statusCode: 201,
           result: userRecord
         };
       } else {
@@ -55,9 +55,27 @@ export default class UserService {
           result: '사용자의 role이 설정되지 않았습니다.'
         };
       }
+      let includedModel;
+      if (userRole === 'parent') {
+        includedModel = ParentModel;
+      } else {
+        includedModel = TeacherModel;
+      }
+      const userRecord = await includedModel.findOne({
+        where: {
+          user_ID: userId
+        },
+        attributes: includedModel.getAttributes('self'),
+        include: [
+          {
+            model: UserModel,
+            attributes: []
+          }
+        ]
+      });
       return {
-        statusCode: 200,
-        result: { updated: true }
+        statusCode: 201,
+        result: userRecord
       };
     } catch (err) {
       console.log(err);

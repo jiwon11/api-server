@@ -80,12 +80,12 @@ export default class Parent extends Model {
   }
 
   /* CLASS-LEVEL FUNCTIONS */
-  static async get(parentId) {
+  static async get(userId) {
     const parentRecord = await this.findOne({
       attributes: this.getAttributes('self'),
       subQuery: false,
       where: {
-        ID: parentId
+        user_ID: userId
       },
       include: [
         {

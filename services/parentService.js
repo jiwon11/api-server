@@ -21,8 +21,8 @@ export default class parentService {
     }
   }
 
-  static async get(parentId) {
-    const parentRecord = await ParentModel.get(parentId);
+  static async get(userId) {
+    const parentRecord = await ParentModel.get(userId);
     if (parentRecord) {
       return {
         statusCode: 200,
