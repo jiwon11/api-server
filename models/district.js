@@ -36,7 +36,7 @@ export default class District extends Model {
     );
   }
   static get getAttributes() {
-    return ['ID', 'si_do', 'si_gun_gu', 'eup_myeon_dong'];
+    return ['ID', 'si_do', 'si_gun_gu', 'eup_myeon_dong', [pkg.fn('CONCAT', pkg.col('si_do'), ' ', pkg.col('si_gun_gu'), ' ', pkg.col('eup_myeon_dong')), 'full_address']];
   }
   /* RELATIONSHIPS */
 
@@ -62,5 +62,19 @@ export default class District extends Model {
 
   /* CLASS-LEVEL FUNCTIONS */
 
-  // Create a new user
+  static async searchAll(query, limit, offset) {
+    try {
+      return this.findAll({
+        where: pkg.where(pkg.fn('CONCAT', pkg.col('si_do'), ' ', pkg.col('si_gun_gu'), ' ', pkg.col('eup_myeon_dong')), {
+          [pkg.Op.like]: `%${query}%`
+        }),
+        attributes: this.getAttributes,
+        limit: limit,
+        offset: offset
+      });
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
 }

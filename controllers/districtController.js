@@ -5,7 +5,7 @@ export const search = async function (req, res) {
     const query = req.query.q;
     const limit = parseInt(req.query.limit);
     const offset = parseInt(req.query.offset);
-    const { statusCode, result } = await districtService.create(query, limit, offset);
+    const { statusCode, result } = await districtService.search(query, limit, offset);
     return res.jsonResult(statusCode, result);
   } catch (err) {
     return res.jsonResult(500, err);
