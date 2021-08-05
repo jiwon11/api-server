@@ -32,7 +32,7 @@ export default async app => {
   app.use(jsonResult);
 
   // application routes
-  app.use('/', indexRouter);
+  app.use('/home', indexRouter);
   app.use('/user', userRouter);
   app.use('/auth', authRouter);
   app.use('/parent', parentRouter);

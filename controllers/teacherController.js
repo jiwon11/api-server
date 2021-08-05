@@ -4,11 +4,13 @@ export const createProfile = async function (req, res) {
   try {
     const userId = req.user.ID;
     const userRole = req.user.role;
-    console.log(req.body);
     const careerDTO = req.body.careers;
     const hopeDistrictDTO = req.body.hopeDistricts;
+    const instrumentDTO = req.body.instruments;
+    const lessonStyleDTO = req.body.lesson_styles;
+    const lessonPlaceDTO = req.body.lesson_places;
     const teacherDTO = req.body.profile;
-    const { statusCode, result } = await teacherService.createProfile(userId, teacherDTO, careerDTO, hopeDistrictDTO);
+    const { statusCode, result } = await teacherService.createProfile(userId, teacherDTO, careerDTO, hopeDistrictDTO, instrumentDTO, lessonStyleDTO, lessonPlaceDTO);
     return res.jsonResult(statusCode, result);
   } catch (err) {
     console.log(err);
@@ -60,8 +62,13 @@ export const getAll = async function (req, res) {
     const userRole = req.user.role;
     const limit = parseInt(req.query.limit);
     const offset = parseInt(req.query.offset);
-    const { statusCode, result } = await teacherService.getAll(limit, offset);
-    return res.jsonResult(statusCode, result);
+    const order = req.query.order;
+    if (['created', 'popular'].includes(order)) {
+      const { statusCode, result } = await teacherService.getAll(limit, offset, order);
+      return res.jsonResult(statusCode, result);
+    } else {
+      return res.jsonResult(401, `유효하지 않는 Query 입니다. 가능 Query: created, popular 입력한 Query: ${req.query.order}`);
+    }
   } catch (err) {
     console.log(err);
     return res.jsonResult(500, err);

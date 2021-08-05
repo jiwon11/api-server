@@ -35,10 +35,10 @@ export default class LessonPlace extends Model {
   // eslint-disable-next-line no-unused-vars
   static associate(models) {
     // Using additional options like CASCADE etc for demonstration
-    this.belongsTo(models.Teacher, {
+    this.belongsToMany(models.Teacher, {
       onDelete: 'CASCADE',
-      foreignKey: 'teacher_ID',
-      targetKey: 'ID'
+      through: 'TEACHER_LESSON_PLACE',
+      foreignKey: 'lesson_place_ID'
     });
   }
 

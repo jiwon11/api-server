@@ -50,8 +50,12 @@ export default class EducationLevel extends Model {
     );
   }
 
-  static get getAttributes() {
-    return ['course', 'school_name', 'subject', 'start_date', 'end_date', 'certificate_img'];
+  static getAttributes(auth) {
+    if (auth) {
+      return ['course', 'school_name', 'subject', 'start_date', 'end_date', 'certificate_img'];
+    } else {
+      return ['course', 'school_name', 'subject'];
+    }
   }
   /* RELATIONSHIPS */
 

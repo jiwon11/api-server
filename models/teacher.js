@@ -2,8 +2,12 @@ import pkg from 'sequelize';
 const { Model } = pkg;
 import UserModel from './user';
 import CoverImgModel from './cover_img';
+import EduLevel from './education_level';
 import CareerModel from './career';
 import DistrictModel from './district';
+import InstrumentModel from './instrument';
+import LessonStyle from './lesson_style';
+import LessonPlace from './lesson_place';
 export default class Teacher extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
@@ -79,7 +83,7 @@ export default class Teacher extends Model {
       'birthday',
       'introduction',
       'can_rental',
-      [pkg.literal('`' + associateTable + 'User`.`profile_img`'), 'profile_img'],
+      //[pkg.literal('`' + associateTable + 'User`.`profile_img`'), 'profile_img'],
       [pkg.literal('`' + associateTable + 'User`.`phone_NO`'), 'phone_NO'],
       [pkg.literal('`' + associateTable + 'User`.`kakao_token`'), 'kakao_token'],
       [pkg.literal('`' + associateTable + 'User`.`ID`'), 'user_ID']
@@ -114,10 +118,10 @@ export default class Teacher extends Model {
       foreignKey: 'teacher_ID',
       sourceKey: 'ID'
     });
-    this.hasMany(models.LessonPlace, {
+    this.belongsToMany(models.LessonPlace, {
       onDelete: 'CASCADE',
-      foreignKey: 'teacher_ID',
-      sourceKey: 'ID'
+      through: 'TEACHER_LESSON_PLACE',
+      foreignKey: 'teacher_ID'
     });
     this.hasMany(models.ForeignLanguage, {
       onDelete: 'CASCADE',
@@ -153,7 +157,15 @@ export default class Teacher extends Model {
   }
 
   /* CLASS-LEVEL FUNCTIONS */
-  static async getAll(limit, offset) {
+  static async getAll(limit, offset, order, district, instrument) {
+    let orderQuery;
+    if (order === 'created') {
+      orderQuery = ['createdAt', 'DESC'];
+    } else if (order === 'popular') {
+      orderQuery = ['createdAt', 'DESC'];
+    }
+    let instrumentIds = instrument ? instrument : { [pkg.Op.not]: null };
+    let districtSearchQuery = district ? DistrictModel.searchQuery(district) : { ID: { [pkg.Op.not]: null } };
     const teacherRecord = await this.findAll({
       where: {
         certificated_edu: false
@@ -171,10 +183,36 @@ export default class Teacher extends Model {
           where: {
             name: 'upperBody'
           }
+        },
+        {
+          model: EduLevel,
+          attributes: EduLevel.getAttributes(false),
+          where: {
+            course: 'university'
+          }
+        },
+        {
+          model: DistrictModel,
+          attributes: [],
+          where: districtSearchQuery,
+          through: {
+            attributes: []
+          }
+        },
+        {
+          model: InstrumentModel,
+          attributes: [],
+          where: {
+            ID: instrumentIds
+          },
+          through: {
+            attributes: []
+          }
         }
       ],
       limit: limit,
-      offset: offset
+      offset: offset,
+      order: [orderQuery]
     });
     return teacherRecord;
   }
@@ -193,13 +231,39 @@ export default class Teacher extends Model {
           attributes: CoverImgModel.getAttributes
         },
         {
+          model: EduLevel,
+          attributes: EduLevel.getAttributes(false)
+        },
+        {
           model: CareerModel,
           attributes: CareerModel.getAttributes,
-          order: ['start_date']
+          order: [['start_date', 'DESC']]
         },
         {
           model: DistrictModel,
           attributes: DistrictModel.getAttributes,
+          through: {
+            attributes: []
+          }
+        },
+        {
+          model: InstrumentModel,
+          attributes: InstrumentModel.getAttributes,
+          through: {
+            attributes: []
+          }
+        },
+        {
+          model: LessonStyle,
+          attributes: LessonStyle.getAttributes,
+          as: 'TeacherLessonStyle',
+          through: {
+            attributes: []
+          }
+        },
+        {
+          model: LessonPlace,
+          attributes: LessonPlace.getAttributes,
           through: {
             attributes: []
           }

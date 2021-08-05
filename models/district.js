@@ -38,6 +38,12 @@ export default class District extends Model {
   static get getAttributes() {
     return ['ID', 'si_do', 'si_gun_gu', 'eup_myeon_dong', [pkg.fn('CONCAT', pkg.col('si_do'), ' ', pkg.col('si_gun_gu'), ' ', pkg.col('eup_myeon_dong')), 'full_address']];
   }
+
+  static searchQuery(query) {
+    return pkg.where(pkg.fn('CONCAT', pkg.col('si_do'), ' ', pkg.col('si_gun_gu'), ' ', pkg.col('eup_myeon_dong')), {
+      [pkg.Op.like]: `%${query}%`
+    });
+  }
   /* RELATIONSHIPS */
 
   // eslint-disable-next-line no-unused-vars
@@ -65,9 +71,7 @@ export default class District extends Model {
   static async searchAll(query, limit, offset) {
     try {
       return this.findAll({
-        where: pkg.where(pkg.fn('CONCAT', pkg.col('si_do'), ' ', pkg.col('si_gun_gu'), ' ', pkg.col('eup_myeon_dong')), {
-          [pkg.Op.like]: `%${query}%`
-        }),
+        where: this.searchQuery(query),
         attributes: this.getAttributes,
         limit: limit,
         offset: offset

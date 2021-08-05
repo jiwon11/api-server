@@ -2,10 +2,9 @@ import TeacherModel from '../models/teacher';
 import CoverImg from '../models/cover_img';
 import Career from '../models/career';
 import EducationLevel from '../models/education_level';
-import { Op } from 'sequelize';
 
 export default class teacherService {
-  static async createProfile(userId, teacherDTO, careerDTO, hopeDistrictDTO) {
+  static async createProfile(userId, teacherDTO, careerDTO, hopeDistrictDTO, instrumentDTO, lessonStyleDTO, lessonPlaceDTO) {
     try {
       const createdTeacher = await TeacherModel.create({
         ...teacherDTO,
@@ -25,6 +24,9 @@ export default class teacherService {
       console.timeEnd('createCareer');
       console.time('addDistricts');
       await createdTeacher.addDistricts(hopeDistrictDTO);
+      await createdTeacher.addInstruments(instrumentDTO);
+      await createdTeacher.addTeacherLessonStyle(lessonStyleDTO);
+      await createdTeacher.addLessonPlaces(lessonPlaceDTO);
       console.timeEnd('addDistricts');
       const teacherRecord = await TeacherModel.getTeacherProfile(createdTeacher.ID);
       return { statusCode: 201, result: teacherRecord };
@@ -84,9 +86,9 @@ export default class teacherService {
     }
   }
 
-  static async getAll(limit, offset) {
+  static async getAll(limit, offset, order, district, instrument) {
     try {
-      const teacherRecord = await TeacherModel.getAll(limit, offset);
+      const teacherRecord = await TeacherModel.getAll(limit, offset, order, district, instrument);
       return { statusCode: 200, result: teacherRecord };
     } catch (err) {
       console.log(err);
@@ -122,7 +124,7 @@ export default class teacherService {
           })
         )
       );
-      const teacherEduLevelRecord = await teacherRecord.getEducationLevels({ attributes: EducationLevel.getAttributes });
+      const teacherEduLevelRecord = await teacherRecord.getEducationLevels({ attributes: EducationLevel.getAttributes(true) });
       return { statusCode: 201, result: teacherEduLevelRecord };
     } catch (err) {
       return { statusCode: 500, result: err };
