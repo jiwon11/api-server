@@ -18,7 +18,6 @@ export const upload = multer(
       contentType: multerS3.AUTO_CONTENT_TYPE,
       key: function (req, file, cb) {
         const splitPath = req.url.split('/');
-        console.log(splitPath);
         cb(null, `${req.baseUrl.replace('/', '')}/${splitPath[1]}/${file.fieldname}/${+Date.now()}${path.basename(file.originalname.replace(/ /gi, ''))}`);
       }
     })

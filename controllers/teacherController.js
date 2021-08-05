@@ -4,13 +4,36 @@ export const createProfile = async function (req, res) {
   try {
     const userId = req.user.ID;
     const userRole = req.user.role;
+    console.log(req.body);
+    const careerDTO = req.body.careers;
+    const hopeDistrictDTO = req.body.hopeDistricts;
+    const teacherDTO = req.body.profile;
+    const { statusCode, result } = await teacherService.createProfile(userId, teacherDTO, careerDTO, hopeDistrictDTO);
+    return res.jsonResult(statusCode, result);
+  } catch (err) {
+    console.log(err);
+    return res.jsonResult(500, err);
+  }
+};
+
+export const uploadCoverImgs = async function (req, res) {
+  try {
+    const teacherId = req.query.id;
     const imgFileDTO = req.files;
     const coverImgDTO = Object.values(imgFileDTO).flat();
-    const performanceVideoDTO = JSON.parse(req.body.performanceVideo);
-    const careerDTO = JSON.parse(req.body.careers);
-    const hopeDistrictDTO = JSON.parse(req.body.hopeDistricts);
-    const teacherDTO = JSON.parse(req.body.profile);
-    const { statusCode, result } = await teacherService.createProfile(userId, teacherDTO, coverImgDTO, performanceVideoDTO, careerDTO, hopeDistrictDTO);
+    const { statusCode, result } = await teacherService.uploadCoverImgs(teacherId, coverImgDTO);
+    return res.jsonResult(statusCode, result);
+  } catch (err) {
+    console.log(err);
+    return res.jsonResult(500, err);
+  }
+};
+
+export const uploadPerformanceVideos = async function (req, res) {
+  try {
+    const teacherId = req.query.id;
+    const performanceVideoDTO = req.body.performanceVideos;
+    const { statusCode, result } = await teacherService.uploadPerformanceVideos(teacherId, performanceVideoDTO);
     return res.jsonResult(statusCode, result);
   } catch (err) {
     console.log(err);

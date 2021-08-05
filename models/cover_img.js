@@ -1,6 +1,5 @@
 import pkg from 'sequelize';
-const { Model } = pkg;
-
+const { Model, Op } = pkg;
 export default class CoverImg extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
@@ -64,5 +63,20 @@ export default class CoverImg extends Model {
 
   /* CLASS-LEVEL FUNCTIONS */
 
-  // Create a new user
+  static async getOnlyImgs(teacherId) {
+    try {
+      return this.findAll({
+        where: {
+          teacher_ID: teacherId,
+          name: {
+            [Op.not]: 'performanceVideo'
+          }
+        },
+        attributes: CoverImg.getAttributes
+      });
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
 }

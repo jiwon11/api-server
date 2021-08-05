@@ -2,56 +2,86 @@ import TeacherModel from '../models/teacher';
 import CoverImg from '../models/cover_img';
 import Career from '../models/career';
 import EducationLevel from '../models/education_level';
+import { Op } from 'sequelize';
 
 export default class teacherService {
-  static async createProfile(userId, teacherDTO, coverImgDTO, performanceVideoDTO, careerDTO, hopeDistrictDTO) {
-    const createdTeacher = await TeacherModel.create({
-      ...teacherDTO,
-      ...{
-        user_ID: userId
-      }
-    });
-    console.time('createCoverImg');
-    await Promise.all(
-      coverImgDTO.map(coverImg =>
-        CoverImg.create({
-          name: coverImg.fieldname,
-          mime_type: coverImg.mimetype,
-          url: coverImg.location,
-          size: coverImg.size,
-          width: 0,
-          height: 0,
-          teacher_ID: createdTeacher.ID
-        })
-      )
-    );
-    console.timeEnd('createCoverImg');
-    console.time('createPerformanceVideo');
-    await CoverImg.create({
-      name: 'performanceVideo',
-      mime_type: 'video/mp4',
-      url: performanceVideoDTO.url,
-      size: 0,
-      width: 0,
-      height: 0,
-      teacher_ID: createdTeacher.ID
-    });
-    console.timeEnd('createPerformanceVideo');
-    console.time('createCareer');
-    await Promise.all(
-      careerDTO.map(career =>
-        Career.create({
-          ...career,
-          ...{ teacher_ID: createdTeacher.ID }
-        })
-      )
-    );
-    console.timeEnd('createCareer');
-    console.time('addDistricts');
-    await createdTeacher.addDistricts(hopeDistrictDTO);
-    console.timeEnd('addDistricts');
-    const teacherRecord = await TeacherModel.getTeacherProfile(createdTeacher.ID);
-    return { statusCode: 201, result: teacherRecord };
+  static async createProfile(userId, teacherDTO, careerDTO, hopeDistrictDTO) {
+    try {
+      const createdTeacher = await TeacherModel.create({
+        ...teacherDTO,
+        ...{
+          user_ID: userId
+        }
+      });
+      console.time('createCareer');
+      await Promise.all(
+        careerDTO.map(career =>
+          Career.create({
+            ...career,
+            ...{ teacher_ID: createdTeacher.ID }
+          })
+        )
+      );
+      console.timeEnd('createCareer');
+      console.time('addDistricts');
+      await createdTeacher.addDistricts(hopeDistrictDTO);
+      console.timeEnd('addDistricts');
+      const teacherRecord = await TeacherModel.getTeacherProfile(createdTeacher.ID);
+      return { statusCode: 201, result: teacherRecord };
+    } catch (err) {
+      console.log(err);
+      return { statusCode: 500, result: err };
+    }
+  }
+
+  static async uploadCoverImgs(teacherId, coverImgDTO) {
+    try {
+      console.time('createCoverImg');
+      await Promise.all(
+        coverImgDTO.map(coverImg =>
+          CoverImg.create({
+            name: coverImg.fieldname,
+            mime_type: coverImg.mimetype,
+            url: coverImg.location,
+            size: coverImg.size,
+            width: 0,
+            height: 0,
+            teacher_ID: teacherId
+          })
+        )
+      );
+      console.timeEnd('createCoverImg');
+      const teacherCoverImgRecord = await CoverImg.getOnlyImgs(teacherId);
+      return { statusCode: 201, result: teacherCoverImgRecord };
+    } catch (err) {
+      console.log(err);
+      return { statusCode: 500, result: err };
+    }
+  }
+
+  static async uploadPerformanceVideos(teacherId, performanceVideoDTO) {
+    try {
+      console.time('createPerformanceVideo');
+      await Promise.all(
+        performanceVideoDTO.map(performanceVideo =>
+          CoverImg.create({
+            name: 'performanceVideo',
+            mime_type: 'video/mp4',
+            url: performanceVideo.url,
+            size: 0,
+            width: 0,
+            height: 0,
+            teacher_ID: teacherId
+          })
+        )
+      );
+      console.timeEnd('createPerformanceVideo');
+      const teacherPerformanceVideoRecord = await CoverImg.findAll({ where: { teacher_ID: teacherId, name: 'performanceVideo' }, attributes: CoverImg.getAttributes });
+      return { statusCode: 201, result: teacherPerformanceVideoRecord };
+    } catch (err) {
+      console.log(err);
+      return { statusCode: 500, result: err };
+    }
   }
 
   static async getAll(limit, offset) {
