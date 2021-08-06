@@ -1,7 +1,7 @@
 export default class TagService {
   static async create(TagModel, tagDTO) {
     try {
-      const tagRecord = await TagModel.create(tagDTO);
+      const tagRecord = await Promise.all(tagDTO.map(tag => TagModel.create(tag)));
       return { statusCode: 201, result: tagRecord };
     } catch (err) {
       console.log(err);
