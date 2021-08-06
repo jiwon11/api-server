@@ -2,6 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
+import compression from 'compression';
 
 // custom utils And middlewares
 import logger from '../libs/logger/index';
@@ -22,6 +23,7 @@ import { pageNotFoundError, respondInternalError } from '../controllers/errorCon
 export default async app => {
   app.set('trust proxy', true);
   app.use(cors());
+  app.use(compression());
   app.use(logger.dev);
 
   app.use(express.json());
