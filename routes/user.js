@@ -11,4 +11,6 @@ router.post('/role', authJWT, userController.setRole);
 
 router.put('/', authJWT, userController.edit);
 
+router.get('/role', authJWT, userController.getByToken);
+
 export default router;

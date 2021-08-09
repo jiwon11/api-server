@@ -36,6 +36,24 @@ export default class UserService {
     }
   }
 
+  static async getRoleData(userId, userRole) {
+    try {
+      let userRoleRecord;
+      if (userRole === 'parent') {
+        userRoleRecord = await ParentModel.getByUserId(userId);
+      } else if (userRole === 'teacher') {
+        userRoleRecord = await TeacherModel.getByUserId(userId);
+      }
+      return {
+        statusCode: 200,
+        result: { role: userRole, userRoleRecord }
+      };
+    } catch (err) {
+      console.log(err);
+      return { statusCode: 500, result: err };
+    }
+  }
+
   static async edit(userId, userRole, userEditDTO) {
     try {
       for (let userColumn of ['phone_NO', 'profile_img']) {

@@ -10,7 +10,7 @@ export default class parentService {
         ...{ user_ID: userId }
       });
 
-      const parentRecord = await ParentModel.get(createdParent.ID);
+      const parentRecord = await ParentModel.getByUserId(createdParent.ID);
       return {
         statusCode: 201,
         result: parentRecord
@@ -22,7 +22,7 @@ export default class parentService {
   }
 
   static async get(userId) {
-    const parentRecord = await ParentModel.get(userId);
+    const parentRecord = await ParentModel.getByUserId(userId);
     if (parentRecord) {
       return {
         statusCode: 200,
@@ -57,7 +57,7 @@ export default class parentService {
     try {
       const editData = parentEditDTO;
       await ParentModel.update(editData, { where: { ID: parentId } });
-      const updatedParentRecord = await ParentModel.get(parentId);
+      const updatedParentRecord = await ParentModel.getByUserId(parentId);
       return {
         statusCode: 201,
         result: updatedParentRecord

@@ -72,6 +72,17 @@ export const setRole = async function (req, res) {
   }
 };
 
+export const getByToken = async function (req, res) {
+  try {
+    const userId = req.user.ID;
+    const userRole = req.user.role;
+    const { statusCode, result } = await userService.getRoleData(userId, userRole);
+    return res.jsonResult(statusCode, result);
+  } catch (err) {
+    return res.jsonResult(500, result.errors);
+  }
+};
+
 export const edit = async function (req, res) {
   try {
     const userId = req.user.ID;

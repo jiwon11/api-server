@@ -217,6 +217,63 @@ export default class Teacher extends Model {
     return teacherRecord;
   }
 
+  static async getByUserId(userId) {
+    const teacherRecord = await this.findOne({
+      where: { user_ID: userId },
+      subQuery: false,
+      attributes: this.getAttributes('self'),
+      include: [
+        {
+          model: UserModel,
+          attributes: []
+        },
+        {
+          model: CoverImgModel,
+          attributes: CoverImgModel.getAttributes
+        },
+        {
+          model: EduLevel,
+          attributes: EduLevel.getAttributes(false)
+        },
+        {
+          model: CareerModel,
+          attributes: CareerModel.getAttributes,
+          order: [['start_date', 'DESC']]
+        },
+        {
+          model: DistrictModel,
+          attributes: DistrictModel.getAttributes,
+          through: {
+            attributes: []
+          }
+        },
+        {
+          model: InstrumentModel,
+          attributes: InstrumentModel.getAttributes,
+          through: {
+            attributes: []
+          }
+        },
+        {
+          model: LessonStyle,
+          attributes: LessonStyle.getAttributes,
+          as: 'TeacherLessonStyle',
+          through: {
+            attributes: []
+          }
+        },
+        {
+          model: LessonPlace,
+          attributes: LessonPlace.getAttributes,
+          through: {
+            attributes: []
+          }
+        }
+      ]
+    });
+    return teacherRecord;
+  }
+
   static async getTeacherProfile(teacherId) {
     const teacherRecord = await this.findOne({
       where: { ID: teacherId },

@@ -80,7 +80,7 @@ export default class Parent extends Model {
   }
 
   /* CLASS-LEVEL FUNCTIONS */
-  static async get(userId) {
+  static async getByUserId(userId) {
     const parentRecord = await this.findOne({
       attributes: this.getAttributes('self'),
       subQuery: false,
