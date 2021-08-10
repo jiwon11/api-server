@@ -10,10 +10,7 @@
     "portMappings": [{
       "containerPort": 80,
       "protocol": "tcp"
-    }],
-    "links": [
-      "tuning-app-container"
-    ]
+    }]
   }, {
     "dnsSearchDomains": null,
     "environmentFiles": [{
@@ -30,6 +27,11 @@
       }
     },
     "entryPoint": null,
+    "portMappings": [{
+      "hostPort": 80,
+      "protocol": "tcp",
+      "containerPort": 3000
+    }],
     "command": null,
     "linuxParameters": null,
     "cpu": 0,
