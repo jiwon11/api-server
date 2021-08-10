@@ -3,7 +3,10 @@
   "executionRoleArn": "arn:aws:iam::447993352427:role/ecsTaskExecutionRole",
   "containerDefinitions": [{
     "dnsSearchDomains": null,
-    "environmentFiles": null,
+    "environmentFiles": [{
+      "value": "arn:aws:s3:::tuning-app-env/config.env",
+      "type": "s3"
+    }],
     "logConfiguration": {
       "logDriver": "awslogs",
       "secretOptions": null,
