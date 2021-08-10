@@ -8,6 +8,7 @@
     "cpu": 256,
     "essential": true,
     "portMappings": [{
+      "hostPort": 80,
       "containerPort": 80,
       "protocol": "tcp"
     }]
@@ -27,11 +28,6 @@
       }
     },
     "entryPoint": null,
-    "portMappings": [{
-      "hostPort": 3000,
-      "protocol": "tcp",
-      "containerPort": 3000
-    }],
     "command": null,
     "linuxParameters": null,
     "cpu": 0,
