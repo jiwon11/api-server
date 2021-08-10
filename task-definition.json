@@ -2,6 +2,19 @@
   "ipcMode": null,
   "executionRoleArn": "arn:aws:iam::447993352427:role/ecsTaskExecutionRole",
   "containerDefinitions": [{
+    "name": "nginx",
+    "image": "447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/web-server-app",
+    "memory": 256,
+    "cpu": 256,
+    "essential": true,
+    "portMappings": [{
+      "containerPort": 80,
+      "protocol": "tcp"
+    }],
+    "links": [
+      "tuning-app-container"
+    ]
+  }, {
     "dnsSearchDomains": null,
     "environmentFiles": [{
       "value": "arn:aws:s3:::tuning-app-env/config.env",
@@ -17,11 +30,6 @@
       }
     },
     "entryPoint": null,
-    "portMappings": [{
-      "hostPort": 3000,
-      "protocol": "tcp",
-      "containerPort": 3000
-    }],
     "command": null,
     "linuxParameters": null,
     "cpu": 0,
