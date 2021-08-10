@@ -2,14 +2,14 @@ import express from 'express';
 const router = express.Router();
 
 // custom utils And middlewares
+import refresh from '../libs/utils/refresh';
+import * as userController from '../controllers/userController';
 import authJWT from '../middlewares/authJWT';
-import { refresh } from '../libs/utils/jwt';
 
-// application Controllers for Routes
-import { start } from '../controllers/authController';
+router.post('/login', userController.login);
 
-/* set routes from Controllers */
 router.get('/refresh', refresh);
-router.get('/', authJWT, start);
+
+router.delete('/withdrawal', authJWT, userController.withdrawal);
 
 export default router;

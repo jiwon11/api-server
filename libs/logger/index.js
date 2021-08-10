@@ -9,14 +9,11 @@ const stream = {
 };
 
 logger.token('cookie', req => req.cookie);
-logger.token(
-  'remote-ip',
-  req => req.ip || req.headers['x-real-ip'] || req.headers['x-forwarded-for']
-);
+logger.token('remote-ip', req => req.ip || req.headers['x-real-ip'] || req.headers['x-forwarded-for']);
 logger.token('host', req => req.hostname);
 logger.token('user', req => {
   if (req.user) {
-    return JSON.stringify(req.user);
+    return req.user;
   }
   return 'no user info';
 });
@@ -25,14 +22,15 @@ logger.token('body', req => req.body);
 logger.token('query', req => req.query);
 logger.token('date', () => moment().tz('Asia/Seoul').format());
 
-const dev = logger((tokens, req, res) =>
-  JSON.stringify({
+const dev = logger((tokens, req, res) => {
+  return JSON.stringify({
     userIPv4: tokens['remote-ip'](req, res),
     user: tokens.user(req, res),
-    time: tokens.date(),
+    dateTime: tokens.date(),
     method: tokens.method(req, res),
     host: tokens.host(req),
-    url: tokens.url(req, res),
+    url: decodeURI(tokens.url(req, res)),
+    'total-time': `${tokens['total-time'](req, res)} ms`,
     'response-time': `${tokens['response-time'](req, res)} ms`,
     'http-version': tokens['http-version'](req, res),
     'status-code': tokens.status(req, res),
@@ -43,7 +41,7 @@ const dev = logger((tokens, req, res) =>
     referrer: tokens.referrer(req, res),
     cookie: tokens.cookie(req),
     'user-agent': tokens['user-agent'](req, res)
-  })
-);
+  });
+});
 
 export default { stream, dev };

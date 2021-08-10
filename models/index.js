@@ -5,20 +5,10 @@ import path from 'path';
 import configFile from '../config/config';
 
 /* jshint laxbreak: true */
-const env =
-  process.env.stage === 'dev'
-    ? 'development'
-    : process.env.stage === 'test'
-    ? 'test'
-    : 'production';
+const env = process.env.stage === 'development' ? 'development' : process.env.stage === 'test' ? 'test' : 'production';
 const config = configFile[env];
 
-export const connection = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config
-);
+export const connection = new Sequelize(config.database, config.username, config.password, config);
 
 //const __filename = fileURLToPath(import.meta.url);
 //const __dirname = dirname(__filename);
@@ -26,10 +16,7 @@ const basename = path.basename(__filename);
 
 console.log('initialize Model Class');
 fs.readdirSync(__dirname)
-  .filter(
-    file =>
-      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
-  )
+  .filter(file => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js')
   .forEach(file => {
     const { default: model } = require(path.join(__dirname, file));
     model.initialize(connection, Sequelize);

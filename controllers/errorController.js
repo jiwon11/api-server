@@ -5,7 +5,7 @@ export const pageNotFoundError = (req, res) => {
   const result = {
     status: errorCode,
     body: {
-      message: 'The page does not exist!'
+      message: '유효하지 않는 API입니다!'
     }
   };
   res.status(errorCode).json(result);
@@ -17,7 +17,7 @@ export const respondInternalError = (errors, req, res, next) => {
   const result = {
     status: errorCode,
     body: {
-      message: 'The page does not exist!'
+      message: '서버에서 에러가 발생하였습니다!'
     }
   };
   res.status(errorCode).json(result);

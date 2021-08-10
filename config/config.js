@@ -1,8 +1,8 @@
 'user strict';
 
-import dotenv from 'dotenv';
+require('@babel/register');
 
-dotenv.config();
+require('dotenv').config();
 
 const { env } = process;
 const development = {
@@ -11,6 +11,7 @@ const development = {
   host: env.DB_Host,
   username: env.DB_Username,
   password: env.DB_Password,
+  logging: false,
   dialect: 'mysql',
   timezone: '+09:00',
   dialectOptions: {
@@ -92,4 +93,4 @@ const production = {
   */
 };
 
-export default { development, production, test };
+module.exports = { development, production, test };
