@@ -2,3 +2,4 @@
 - 카카오 워크와 연동 됩니다.
 - [Gitkraken](https://www.gitkraken.com/)을 통해 커밋 메시지와 add / commit / push & Pull Request을 처리합니다.
 - git workflow 기반 branch 개발
+- ECS / ECR / Github Action으로 자동화 CI/CD를 처리합니다.
