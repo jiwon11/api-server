@@ -14,3 +14,5 @@ services:
     image: 447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/tuning-app:latest
     build:
       context: ./app
+    networks:
+      - nginx
