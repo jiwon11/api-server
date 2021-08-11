@@ -9,10 +9,7 @@ async function startServer() {
 
     app.listen(process.env.PORT || 3000, '0.0.0.0', err => {
       if (err) {
-        console.log(err.errors);
-        if (process.env.PM2) process.send('ready');
-        console.log(`> ✨Ready on http://localhost:${port}`);
-        return;
+        return console.log(err);
       }
       console.log(`Server is ready !`);
     });

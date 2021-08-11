@@ -27,5 +27,10 @@ export default (req, res, next) => {
         message: result.message ? result.message : '사용자가 존재하지 않습니다.' // jwt가 만료되었다면 메세지는 'jwt expired'입니다.
       });
     }
+  } else {
+    return res.jsonResult(404, {
+      ok: false,
+      message: '토큰이 존재하지 않습니다.'
+    });
   }
 };
