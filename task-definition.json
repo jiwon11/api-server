@@ -14,7 +14,9 @@
         }
       },
       "entryPoint": null,
-      "portMappings": [],
+      "portMappings": [{
+        "containerPort": 3000
+      }],
       "command": null,
       "linuxParameters": null,
       "cpu": 0,
@@ -85,7 +87,10 @@
       "image": "447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/reverse-proxy:latest",
       "startTimeout": null,
       "firelensConfiguration": null,
-      "dependsOn": null,
+      "dependsOn": [{
+        "containerName": "tuning-app-container",
+        "condition": "START"
+      }],
       "disableNetworking": null,
       "interactive": null,
       "healthCheck": null,
