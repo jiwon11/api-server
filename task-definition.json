@@ -164,7 +164,7 @@
   "requiresCompatibilities": [
     "FARGATE"
   ],
-  "networkMode": "bridge",
+  "networkMode": "awsvpc",
   "cpu": "256",
   "revision": 18,
   "status": "ACTIVE",
