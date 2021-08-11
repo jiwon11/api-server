@@ -13,5 +13,5 @@ RUN npm install -g pm2
 RUN npm install
 
 # Expose the listening port of your app
-
-CMD [ "pm2-runtime", "start", "ecosystem.config.js"]
+EXPOSE 3000
+CMD [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]

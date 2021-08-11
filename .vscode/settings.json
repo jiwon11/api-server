@@ -1,0 +1,110 @@
+{
+  "editor.fontSize": 16,
+  "editor.fontFamily": "Hack, Menlo, Monaco, 'Courier New', monospace",
+  "terminal.integrated.fontFamily": "MesloLGS NF",
+  "outline.problems.colors": true,
+  "outline.icons": true,
+  "jshint.options": {
+    "esversion": 9,
+    "node": true
+  },
+  "html.autoClosingTags": true,
+  "html.suggest.html5": true,
+  "terminal.integrated.fontSize": 15,
+  "eslint.alwaysShowStatus": true,
+  // save시 eslint를 사용해 autofix 실행 (ex. let => const)
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "javascript.format.enable": false,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Prettier 기본 설정. 프로젝트 루트의 .prettierrc 파일의 설정이 우선한다.
+  "prettier.arrowParens": "avoid",
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+  "prettier.printWidth": 300,
+  "prettier.useTabs": false,
+  "mssql.maxRecentConnections": 5,
+  "mssql.connections": [],
+  "mssql.shortcuts": {
+    "event.toggleResultPane": "ctrl+alt+r",
+    "event.toggleMessagePane": "ctrl+alt+y",
+    "event.prevGrid": "ctrl+up",
+    "event.nextGrid": "ctrl+down",
+    "event.copySelection": "ctrl+c",
+    "event.maximizeGrid": "",
+    "event.selectAll": "",
+    "event.saveAsJSON": "",
+    "event.saveAsCSV": "",
+    "event.saveAsExcel": ""
+  },
+  "mssql.messagesDefaultOpen": true,
+  "mssql.logDebugInfo": false,
+  "mssql.intelliSense.enableIntelliSense": true,
+  "mssql.intelliSense.enableErrorChecking": true,
+  "mssql.intelliSense.enableSuggestions": true,
+  "mssql.intelliSense.enableQuickInfo": true,
+  "mssql.intelliSense.lowerCaseSuggestions": false,
+  "mssql.resultsFontFamily": "-apple-system,BlinkMacSystemFont,Segoe WPC,Segoe UI,HelveticaNeue-Light,Ubuntu,Droid Sans,sans-serif",
+  "mssql.resultsFontSize": 13,
+  "mssql.copyIncludeHeaders": false,
+  "mssql.copyRemoveNewLine": true,
+  "mssql.splitPaneSelection": "next",
+  "mssql.format.alignColumnDefinitionsInColumns": false,
+  "mssql.format.datatypeCasing": "none",
+  "mssql.format.keywordCasing": "none",
+  "mssql.format.placeCommasBeforeNextStatement": false,
+  "mssql.format.placeSelectStatementReferencesOnNewLine": false,
+  "mssql.applyLocalization": false,
+  "mssql.query.displayBitAsNumber": true,
+  "mssql.persistQueryResultTabs": false,
+  "git.ignoreLimitWarning": true,
+  "editor.autoIndent": "full",
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": true,
+  "editor.cursorStyle": "line",
+  "editor.fontLigatures": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": false,
+  "editor.letterSpacing": 0.3,
+  "editor.lineHeight": 25,
+  "editor.minimap.enabled": false,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.suggestSelection": "first",
+  "editor.tabCompletion": "on",
+  "editor.wordWrap": "on",
+  "search.showLineNumbers": true,
+  "workbench.colorCustomizations": {},
+  "zenMode.centerLayout": false,
+  "jupyter.jupyterServerType": "remote",
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 300,
+      "server": "database-1.c4bbsevvpyvs.ap-northeast-1.rds.amazonaws.com",
+      "port": 3306,
+      "askForPassword": true,
+      "driver": "MySQL",
+      "database": "chikachika_db_dev",
+      "username": "admin",
+      "name": "development"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 300,
+      "server": "database-1.c4bbsevvpyvs.ap-northeast-1.rds.amazonaws.com",
+      "port": 3306,
+      "askForPassword": true,
+      "driver": "MySQL",
+      "database": "chikachika_db_test",
+      "username": "admin",
+      "name": "test"
+    }
+  ],
+  "cSpell.words": ["tuningapp"]
+}

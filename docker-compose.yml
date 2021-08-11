@@ -1,0 +1,14 @@
+version: '2'
+services:
+  nginx:
+    image: 447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/reverse-proxy:latest
+    build:
+      context: ./nginx
+    ports:
+      - 80:80
+    links:
+      - app
+  app:
+    image: 447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/tuning-app:latest
+    build:
+      context: ./app
