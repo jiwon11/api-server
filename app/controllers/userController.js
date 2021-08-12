@@ -1,6 +1,7 @@
 import userService from '../services/userService';
 import { sign, refresh } from '../libs/utils/jwt';
 import redisClient from '../libs/utils/redis';
+import { encrypt, decrypt } from '../libs/utils/encryption';
 
 /*
 exports.login = (req, res, next) => {
@@ -11,7 +12,14 @@ exports.login = (req, res, next) => {
 
 export const login = async function (req, res) {
   try {
-    const userDTO = req.body;
+    const kakaoPofile = req.user.profile;
+    //console.log(kakaoPofile);
+    const userDTO = {
+      phone_NO: kakaoPofile._json.kakao_account.phone_number,
+      kakao_token: kakaoPofile.id,
+      profile_img: kakaoPofile._json.kakao_account.profile.profile_image_url
+    };
+    console.log(userDTO);
     const { userRecord, created } = await userService.login(userDTO);
 
     const accessToken = sign(userRecord);
@@ -27,13 +35,27 @@ export const login = async function (req, res) {
     } else {
       statusCode = 200;
     }
-    return res.jsonResult(statusCode, {
-      created,
+    const userToken = JSON.stringify({
+      created: created,
       accessToken: accessToken,
       refreshToken: refreshToken
     });
+    const encryptToken = encrypt(userToken);
+    return res.redirect(`${process.env.CLIENT_HOST}/login?token=${encryptToken}`);
   } catch (err) {
-    return res.jsonResult(statusCode, result.errors);
+    console.log(err);
+    return res.jsonResult(500, err);
+  }
+};
+
+export const getJWTByToken = async function (req, res) {
+  try {
+    const userToken = req.body.token;
+    const decryptResult = decrypt(userToken);
+    return res.jsonResult(200, JSON.parse(decryptResult));
+  } catch (err) {
+    console.log(err);
+    return res.jsonResult(500, err);
   }
 };
 
@@ -68,7 +90,7 @@ export const setRole = async function (req, res) {
       return res.jsonResult(statusCode, result.errors);
     }
   } catch (err) {
-    return res.jsonResult(statusCode, result.errors);
+    return res.jsonResult(statusCode, err);
   }
 };
 
@@ -79,7 +101,8 @@ export const getByToken = async function (req, res) {
     const { statusCode, result } = await userService.getRoleData(userId, userRole);
     return res.jsonResult(statusCode, result);
   } catch (err) {
-    return res.jsonResult(500, result.errors);
+    console.log(err);
+    return res.jsonResult(500, err);
   }
 };
 

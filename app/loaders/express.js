@@ -22,7 +22,7 @@ import { pageNotFoundError, respondInternalError } from '../controllers/errorCon
 
 export default async app => {
   app.set('trust proxy', true);
-  app.use(cors());
+  app.use(cors({ credentials: true }));
   app.use(compression());
   app.use(logger.dev);
 
@@ -34,7 +34,7 @@ export default async app => {
   app.use(jsonResult);
 
   // application routes
-  app.use('/home', indexRouter);
+  app.use('/', indexRouter);
   app.use('/user', userRouter);
   app.use('/auth', authRouter);
   app.use('/parent', parentRouter);

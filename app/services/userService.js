@@ -6,7 +6,7 @@ export default class UserService {
   static async login(userDTO) {
     try {
       const [userRecord, created] = await UserModel.findOrCreate({
-        where: { phone_NO: userDTO.phone_NO, kakao_token: userDTO.kakao_token }
+        where: userDTO
       });
       return { userRecord: userRecord.dataValues, created };
     } catch (err) {
