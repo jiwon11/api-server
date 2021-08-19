@@ -1,5 +1,11 @@
 version: '2'
 services:
+  nginx-amplify:
+    build:
+      context: ./docker-nginx-amplify
+    environment:
+      - API_KEY=f26f69dac02529d66d7cd1ce14ac3ae4
+      - AMPLIFY_IMAGENAME=tuning-nginx-amplify
   nginx:
     image: 447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/reverse-proxy:latest
     build:

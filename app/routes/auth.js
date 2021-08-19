@@ -5,12 +5,8 @@ const router = express.Router();
 import refresh from '../libs/utils/refresh';
 import * as userController from '../controllers/userController';
 import authJWT from '../middlewares/authJWT';
-import { default as passport } from '../passport/kakaoStrategy';
-//router.post('/login', userController.login);
 
 router.get('/refresh', refresh);
-
-router.get('/kakao', passport.authenticate('kakao'));
 
 router.post('/login', userController.login);
 
