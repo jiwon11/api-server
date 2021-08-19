@@ -12,15 +12,7 @@ router.get('/refresh', refresh);
 
 router.get('/kakao', passport.authenticate('kakao'));
 
-router.get(
-  '/kakao/callback',
-  passport.authenticate('kakao', {
-    session: false,
-    failureRedirect: '/'
-  }),
-  userController.login
-);
-router.post('/login', userController.getJWTByToken);
+router.post('/login', userController.login);
 
 router.delete('/withdrawal', authJWT, userController.withdrawal);
 

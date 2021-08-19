@@ -8,7 +8,7 @@ import compression from 'compression';
 import logger from '../libs/logger/index';
 import jsonResult from '../middlewares/jsonResult';
 
-import indexRouter from '../routes/index';
+import mainRouter from '../routes/main';
 import userRouter from '../routes/user';
 import authRouter from '../routes/auth';
 import parentRouter from '../routes/parent';
@@ -22,7 +22,12 @@ import { pageNotFoundError, respondInternalError } from '../controllers/errorCon
 
 export default async app => {
   app.set('trust proxy', true);
-  app.use(cors({ credentials: true }));
+  app.use(cors({ credentials: true, origin: true, exposedHeaders: ['cookie'] }));
+  app.all('/*', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    next();
+  });
   app.use(compression());
   app.use(logger.dev);
 
@@ -34,7 +39,7 @@ export default async app => {
   app.use(jsonResult);
 
   // application routes
-  app.use('/', indexRouter);
+  app.use('/', mainRouter);
   app.use('/user', userRouter);
   app.use('/auth', authRouter);
   app.use('/parent', parentRouter);

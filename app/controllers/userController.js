@@ -1,25 +1,15 @@
 import userService from '../services/userService';
 import { sign, refresh } from '../libs/utils/jwt';
 import redisClient from '../libs/utils/redis';
-import { encrypt, decrypt } from '../libs/utils/encryption';
-
-/*
-exports.login = (req, res, next) => {
-  res.send("respond with a resource");
-  //authService.login(req.body.username, req.body.password, (err, result) => {});
-};
-*/
+import { getToken, getUserProfile } from '../libs/utils/kakao';
 
 export const login = async function (req, res) {
   try {
-    const kakaoPofile = req.user.profile;
-    //console.log(kakaoPofile);
-    const userDTO = {
-      phone_NO: kakaoPofile._json.kakao_account.phone_number,
-      kakao_token: kakaoPofile.id,
-      profile_img: kakaoPofile._json.kakao_account.profile.profile_image_url
-    };
-    console.log(userDTO);
+    const kakaoAccessCode = req.body.code;
+    const kakaoToken = await getToken(kakaoAccessCode);
+    console.log('kakaoToken', kakaoToken);
+    const userDTO = await getUserProfile(kakaoToken.access_token);
+    console.log('userData', userDTO);
     const { userRecord, created } = await userService.login(userDTO);
 
     const accessToken = sign(userRecord);
@@ -35,13 +25,12 @@ export const login = async function (req, res) {
     } else {
       statusCode = 200;
     }
-    const userToken = JSON.stringify({
+    const userToken = {
       created: created,
       accessToken: accessToken,
       refreshToken: refreshToken
-    });
-    const encryptToken = encrypt(userToken);
-    return res.redirect(`${process.env.CLIENT_HOST}/login?token=${encryptToken}`);
+    };
+    return res.jsonResult(200, userToken);
   } catch (err) {
     console.log(err);
     return res.jsonResult(500, err);
