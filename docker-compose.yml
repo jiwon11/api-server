@@ -1,25 +1,5 @@
 version: '2'
 services:
-  st-agent:
-    image: sematext/agent:latest
-    environment:
-      - INFRA_TOKEN=1be06f3c-e936-429e-935d-9390b99187ca
-      - SERVER_BASE_URL=https://spm-receiver.sematext.com
-      - LOGS_RECEIVER_URL=https://logsene-receiver.sematext.com
-      - EVENT_RECEIVER_URL=https://event-receiver.sematext.com
-      - COMMAND_SERVER_URL=https://command.sematext.com
-    cap_add:
-      - SYS_ADMIN
-    restart: always
-    volumes:
-      - /:/hostfs:ro
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-      - /var/run/:/var/run
-      - /sys/kernel/debug:/sys/kernel/debug
-      - /sys:/host/sys:ro
-      - /dev:/hostfs/dev:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
   nginx:
     image: 447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/reverse-proxy:latest
     build:
