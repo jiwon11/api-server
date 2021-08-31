@@ -1,17 +1,15 @@
 import userService from '../services/userService';
 import { sign, refresh } from '../libs/utils/jwt';
 import redisClient from '../libs/utils/redis';
-
-/*
-exports.login = (req, res, next) => {
-  res.send("respond with a resource");
-  //authService.login(req.body.username, req.body.password, (err, result) => {});
-};
-*/
+import { getToken, getUserProfile } from '../libs/utils/kakao';
 
 export const login = async function (req, res) {
   try {
-    const userDTO = req.body;
+    const kakaoAccessCode = req.body.code;
+    const kakaoToken = await getToken(kakaoAccessCode);
+    console.log('kakaoToken', kakaoToken);
+    const userDTO = await getUserProfile(kakaoToken.access_token);
+    console.log('userData', userDTO);
     const { userRecord, created } = await userService.login(userDTO);
 
     const accessToken = sign(userRecord);
@@ -27,13 +25,26 @@ export const login = async function (req, res) {
     } else {
       statusCode = 200;
     }
-    return res.jsonResult(statusCode, {
-      created,
+    const userToken = {
+      created: created,
       accessToken: accessToken,
       refreshToken: refreshToken
-    });
+    };
+    return res.jsonResult(200, userToken);
   } catch (err) {
-    return res.jsonResult(statusCode, result.errors);
+    console.log(err);
+    return res.jsonResult(500, err);
+  }
+};
+
+export const getJWTByToken = async function (req, res) {
+  try {
+    const userToken = req.body.token;
+    const decryptResult = decrypt(userToken);
+    return res.jsonResult(200, JSON.parse(decryptResult));
+  } catch (err) {
+    console.log(err);
+    return res.jsonResult(500, err);
   }
 };
 
@@ -68,7 +79,7 @@ export const setRole = async function (req, res) {
       return res.jsonResult(statusCode, result.errors);
     }
   } catch (err) {
-    return res.jsonResult(statusCode, result.errors);
+    return res.jsonResult(statusCode, err);
   }
 };
 
@@ -79,7 +90,8 @@ export const getByToken = async function (req, res) {
     const { statusCode, result } = await userService.getRoleData(userId, userRole);
     return res.jsonResult(statusCode, result);
   } catch (err) {
-    return res.jsonResult(500, result.errors);
+    console.log(err);
+    return res.jsonResult(500, err);
   }
 };
 

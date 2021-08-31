@@ -6,9 +6,9 @@ import refresh from '../libs/utils/refresh';
 import * as userController from '../controllers/userController';
 import authJWT from '../middlewares/authJWT';
 
-router.post('/login', userController.login);
-
 router.get('/refresh', refresh);
+
+router.post('/login', userController.login);
 
 router.delete('/withdrawal', authJWT, userController.withdrawal);
 

@@ -2,7 +2,6 @@ import expressLoader from './express';
 import mySqlLoader from './mysql';
 import { connection } from '../models';
 import ngrok from 'ngrok';
-
 export default async app => {
   mySqlLoader(connection);
 
