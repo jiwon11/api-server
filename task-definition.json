@@ -108,6 +108,55 @@
       "systemControls": null,
       "privileged": null,
       "name": "reverse-proxy-container"
+    }, {
+      "image": "sematext/agent:latest",
+      "name": "sematext-agent",
+      "privileged": true,
+      "environment": [{
+          "name": "INFRA_TOKEN",
+          "value": "1be06f3c-e936-429e-935d-9390b99187ca"
+        },
+        {
+          "name": "REGION",
+          "value": "US"
+        }
+      ],
+      "mountPoints": [{
+          "readOnly": true,
+          "containerPath": "/hostfs",
+          "sourceVolume": "hostfs"
+        },
+        {
+          "readOnly": true,
+          "containerPath": "/hostfs/sys",
+          "sourceVolume": "sysfs"
+        },
+        {
+          "readOnly": true,
+          "containerPath": "/etc/passwd",
+          "sourceVolume": "passwd"
+        },
+        {
+          "readOnly": true,
+          "containerPath": "/etc/group",
+          "sourceVolume": "group"
+        },
+        {
+          "readOnly": false,
+          "containerPath": "/sys/kernel/debug",
+          "sourceVolume": "debugfs"
+        },
+        {
+          "readOnly": false,
+          "containerPath": "/var/run/",
+          "sourceVolume": "run"
+        },
+        {
+          "readOnly": true,
+          "containerPath": "/hostfs/dev",
+          "sourceVolume": "dev"
+        }
+      ]
     }
   ],
   "placementConstraints": [],
@@ -178,5 +227,47 @@
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
-  "volumes": []
+  "volumes": [{
+      "name": "hostfs",
+      "host": {
+        "sourcePath": "/"
+      }
+    },
+    {
+      "name": "sysfs",
+      "host": {
+        "sourcePath": "/sys/"
+      }
+    },
+    {
+      "name": "passwd",
+      "host": {
+        "sourcePath": "/etc/passwd"
+      }
+    },
+    {
+      "name": "group",
+      "host": {
+        "sourcePath": "/etc/group"
+      }
+    },
+    {
+      "name": "debugfs",
+      "host": {
+        "sourcePath": "/sys/kernel/debug"
+      }
+    },
+    {
+      "name": "run",
+      "host": {
+        "sourcePath": "/var/run/"
+      }
+    },
+    {
+      "name": "dev",
+      "host": {
+        "sourcePath": "/hostfs/dev"
+      }
+    }
+  ]
 }
