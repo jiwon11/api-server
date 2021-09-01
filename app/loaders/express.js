@@ -32,13 +32,14 @@ export default async app => {
   app.use(compression());
   app.use(logger.dev);
 
+  AWSXRay.setLogger(logger.dev);
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(express.static(path.join(path.resolve(), 'public')));
   // custom middlewares
   app.use(jsonResult);
-
+  AWSXRay.config([AWSXRay.plugins.ECSPlugin]);
   app.use(AWSXRay.express.openSegment('TuningApp'));
   // application routes
   app.use('/', mainRouter);
