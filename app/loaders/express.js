@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
 import compression from 'compression';
+import AWSXRay from 'aws-xray-sdk';
 
 // custom utils And middlewares
 import logger from '../libs/logger/index';
@@ -38,6 +39,7 @@ export default async app => {
   // custom middlewares
   app.use(jsonResult);
 
+  app.use(AWSXRay.express.openSegment('TuningApp'));
   // application routes
   app.use('/', mainRouter);
   app.use('/user', userRouter);
@@ -47,6 +49,7 @@ export default async app => {
   app.use('/tag', tagRouter);
   app.use('/recommend', recommendRouter);
   app.use('/search', searchRouter);
+  app.use(AWSXRay.express.closeSegment());
   // custom Error controllers
   app.use(pageNotFoundError);
   app.use(respondInternalError);
