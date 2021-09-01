@@ -32,7 +32,6 @@ export default async app => {
   app.use(compression());
   app.use(logger.dev);
 
-  AWSXRay.setLogger(logger.dev);
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
@@ -50,9 +49,10 @@ export default async app => {
   app.use('/tag', tagRouter);
   app.use('/recommend', recommendRouter);
   app.use('/search', searchRouter);
-  app.use(AWSXRay.express.closeSegment());
   // custom Error controllers
   app.use(pageNotFoundError);
   app.use(respondInternalError);
+
+  app.use(AWSXRay.express.closeSegment());
   return app;
 };
