@@ -2,6 +2,16 @@
   "ipcMode": null,
   "executionRoleArn": "arn:aws:iam::447993352427:role/ecsTaskExecutionRole",
   "containerDefinitions": [{
+      "name": "xray-daemon",
+      "image": "amazon/aws-xray-daemon",
+      "cpu": 32,
+      "memoryReservation": 256,
+      "portMappings": [{
+        "hostPort": 0,
+        "containerPort": 2000,
+        "protocol": "udp"
+      }]
+    }, {
       "dnsSearchDomains": null,
       "environmentFiles": [{
         "value": "arn:aws:s3:::tuning-app-env/config.env",
