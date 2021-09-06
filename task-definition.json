@@ -2,15 +2,6 @@
   "ipcMode": null,
   "executionRoleArn": "arn:aws:iam::447993352427:role/ecsTaskExecutionRole",
   "containerDefinitions": [{
-      "name": "xray-daemon",
-      "image": "amazon/aws-xray-daemon",
-      "cpu": 32,
-      "memoryReservation": 256,
-      "portMappings": [{
-        "containerPort": 2000,
-        "protocol": "udp"
-      }]
-    }, {
       "dnsSearchDomains": null,
       "environmentFiles": [{
         "value": "arn:aws:s3:::tuning-app-env/config.env",
@@ -40,7 +31,7 @@
       "workingDirectory": null,
       "secrets": null,
       "dockerSecurityOptions": null,
-      "memory": null,
+      "memory": "1gb",
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
@@ -179,10 +170,10 @@
   ],
   "pidMode": null,
   "requiresCompatibilities": [
-    "FARGATE"
+    "EC2"
   ],
-  "networkMode": "awsvpc",
-  "cpu": "256",
+  "networkMode": null,
+  "cpu": "1024",
   "revision": 18,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
