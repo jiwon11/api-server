@@ -24,7 +24,7 @@
       }],
       "command": null,
       "linuxParameters": null,
-      "cpu": 0,
+      "cpu": 1024,
       "environment": [],
       "resourceRequirements": null,
       "ulimits": null,
@@ -76,7 +76,7 @@
       }],
       "command": null,
       "linuxParameters": null,
-      "cpu": 0,
+      "cpu": 1024,
       "environment": [],
       "resourceRequirements": null,
       "ulimits": null,
@@ -113,7 +113,7 @@
     }
   ],
   "placementConstraints": [],
-  "memory": "",
+  "memory": null,
   "taskRoleArn": "arn:aws:iam::447993352427:role/ecsTaskExecutionRole",
   "compatibilities": [
     "EXTERNAL",
@@ -175,7 +175,7 @@
     "EC2"
   ],
   "networkMode": "bridge",
-  "cpu": "",
+  "cpu": null,
   "revision": 43,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
