@@ -3,7 +3,6 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
 import compression from 'compression';
-import AWSXRay from 'aws-xray-sdk';
 
 // custom utils And middlewares
 import logger from '../libs/logger/index';
@@ -17,6 +16,7 @@ import teacherRouter from '../routes/teacher';
 import tagRouter from '../routes/tag';
 import recommendRouter from '../routes/recommend';
 import searchRouter from '../routes/search';
+import onepointRouter from '../routes/onepoint';
 
 // application Controllers for Routes
 import { pageNotFoundError, respondInternalError } from '../controllers/errorController';
@@ -38,8 +38,6 @@ export default async app => {
   app.use(express.static(path.join(path.resolve(), 'public')));
   // custom middlewares
   app.use(jsonResult);
-  AWSXRay.config([AWSXRay.plugins.ECSPlugin]);
-  app.use(AWSXRay.express.openSegment('TuningApp'));
   // application routes
   app.use('/', mainRouter);
   app.use('/user', userRouter);
@@ -49,10 +47,10 @@ export default async app => {
   app.use('/tag', tagRouter);
   app.use('/recommend', recommendRouter);
   app.use('/search', searchRouter);
+  app.use('/onepoint', onepointRouter);
   // custom Error controllers
   app.use(pageNotFoundError);
   app.use(respondInternalError);
 
-  app.use(AWSXRay.express.closeSegment());
   return app;
 };
