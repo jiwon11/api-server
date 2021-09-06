@@ -18,11 +18,13 @@
       },
       "entryPoint": null,
       "portMappings": [{
+        "hostPort": 3000,
+        "protocol": "tcp",
         "containerPort": 3000
       }],
       "command": null,
       "linuxParameters": null,
-      "cpu": 0,
+      "cpu": 512,
       "environment": [],
       "resourceRequirements": null,
       "ulimits": null,
@@ -31,7 +33,7 @@
       "workingDirectory": null,
       "secrets": null,
       "dockerSecurityOptions": null,
-      "memory": 0,
+      "memory": 500,
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
@@ -111,13 +113,13 @@
     }
   ],
   "placementConstraints": [],
-  "memory": "512",
+  "memory": "1024",
   "taskRoleArn": "arn:aws:iam::447993352427:role/ecsTaskExecutionRole",
   "compatibilities": [
-    "EC2",
-    "FARGATE"
+    "EXTERNAL",
+    "EC2"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:447993352427:task-definition/tuning-app-task:18",
+  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:447993352427:task-definition/tuning-app-task:37",
   "family": "tuning-app-task",
   "requiresAttributes": [{
       "targetId": null,
@@ -147,25 +149,25 @@
       "targetId": null,
       "targetType": null,
       "value": null,
+      "name": "ecs.capability.env-files.s3"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
       "name": "com.amazonaws.ecs.capability.task-iam-role"
     },
     {
       "targetId": null,
       "targetType": null,
       "value": null,
+      "name": "ecs.capability.container-ordering"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
       "name": "ecs.capability.execution-role-ecr-pull"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.task-eni"
     }
   ],
   "pidMode": null,
@@ -173,8 +175,8 @@
     "EC2"
   ],
   "networkMode": null,
-  "cpu": "0",
-  "revision": 18,
+  "cpu": "512",
+  "revision": 37,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
