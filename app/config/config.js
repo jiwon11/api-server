@@ -8,9 +8,9 @@ const { env } = process;
 const development = {
   database: 'mvcTest',
   port: 3306,
-  host: env.DB_Host,
-  username: env.DB_Username,
-  password: env.DB_Password,
+  host: env.local_DB_Host,
+  username: env.local_DB_Username,
+  password: env.local_DB_Username,
   logging: false,
   dialect: 'mysql',
   timezone: '+09:00',
