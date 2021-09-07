@@ -22,7 +22,7 @@
         "protocol": "tcp",
         "containerPort": 3000
       }],
-      "command": null,
+      "command": ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"],
       "linuxParameters": null,
       "cpu": 1024,
       "environment": [],
@@ -74,7 +74,7 @@
         "protocol": "tcp",
         "containerPort": 80
       }],
-      "command": null,
+      "command": ["nginx", "-g", "daemon off;"],
       "linuxParameters": null,
       "cpu": 1024,
       "environment": [],
