@@ -9,7 +9,7 @@ services:
       - 80:80
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    external_links:
+    links:
       - app
     depends_on:
       - app
