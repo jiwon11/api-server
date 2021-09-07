@@ -34,7 +34,7 @@
       "secrets": null,
       "dockerSecurityOptions": null,
       "memory": 700,
-      "memoryReservation": 300,
+      "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
       "image": "447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/tuning-app:latest",
@@ -85,8 +85,8 @@
       "workingDirectory": null,
       "secrets": null,
       "dockerSecurityOptions": null,
-      "memory": 128,
-      "memoryReservation": 50,
+      "memory": 100,
+      "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
       "image": "447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/reverse-proxy:latest",
@@ -100,9 +100,7 @@
       "interactive": null,
       "healthCheck": null,
       "essential": true,
-      "links": [
-        "tuning-app-container"
-      ],
+      "links": ["tuning-app-container"],
       "hostname": null,
       "extraHosts": null,
       "pseudoTerminal": null,
@@ -115,13 +113,13 @@
     }
   ],
   "placementConstraints": [],
-  "memory": "1024",
+  "memory": null,
   "taskRoleArn": "arn:aws:iam::447993352427:role/ecsTaskExecutionRole",
   "compatibilities": [
     "EXTERNAL",
     "EC2"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:447993352427:task-definition/tuning-app-task:latest",
+  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:447993352427:task-definition/tuning-app-task:43",
   "family": "tuning-app-task",
   "requiresAttributes": [{
       "targetId": null,
@@ -157,12 +155,6 @@
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
       "name": "com.amazonaws.ecs.capability.task-iam-role"
     },
     {
@@ -183,8 +175,8 @@
     "EC2"
   ],
   "networkMode": null,
-  "cpu": "2048",
-  "revision": 66,
+  "cpu": null,
+  "revision": 43,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
