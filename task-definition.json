@@ -174,7 +174,7 @@
   "requiresCompatibilities": [
     "EC2"
   ],
-  "networkMode": null,
+  "networkMode": "awsvpc",
   "cpu": null,
   "revision": 43,
   "status": "ACTIVE",
