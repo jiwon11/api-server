@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  nginx:
+  reverse-proxy-container:
     image: 447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/reverse-proxy:latest
     build:
       context: ./nginx
@@ -10,10 +10,10 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     links:
-      - app
+      - tuning-app-container
     depends_on:
-      - app
-  app:
+      - tuning-app-container
+  tuning-app-container:
     image: 447993352427.dkr.ecr.ap-northeast-2.amazonaws.com/tuning-app:latest
     build:
       context: ./app
