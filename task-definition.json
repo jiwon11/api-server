@@ -54,7 +54,7 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": null,
-      "name": "tuning-app-container"
+      "name": "app"
     },
     {
       "dnsSearchDomains": null,
@@ -93,14 +93,14 @@
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": [{
-        "containerName": "tuning-app-container",
+        "containerName": "app",
         "condition": "START"
       }],
       "disableNetworking": null,
       "interactive": null,
       "healthCheck": null,
       "essential": true,
-      "links": null,
+      "links": ["app"],
       "hostname": null,
       "extraHosts": null,
       "pseudoTerminal": null,
@@ -109,7 +109,7 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": null,
-      "name": "reverse-proxy-container"
+      "name": "reverse-proxy"
     }
   ],
   "placementConstraints": [],
