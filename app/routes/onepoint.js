@@ -11,4 +11,6 @@ router.post('/violin', upload.array('performance_video'), onepoint.create);
 
 router.get('/violin/:id', onepoint.get);
 
+router.put('/violin/:id', upload.array('performance_video'), onepoint.edit);
+
 export default router;
