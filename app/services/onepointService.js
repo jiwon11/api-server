@@ -35,7 +35,11 @@ export default class onepointService {
           attributes: OnepointPerformanceVideoModel.getAttributes
         }
       });
-      return { statusCode: 200, result: onepointRecords };
+      if (onepointRecords) {
+        return { statusCode: 200, result: onepointRecords };
+      } else {
+        return { statusCode: 404, result: `id 값으로 ${onepointId}를 가진 레슨 요청 레코드가 존재하지 않습니다.` };
+      }
     } catch (err) {
       console.log(err);
       return { statusCode: 500, result: err };
