@@ -24,7 +24,7 @@
       }],
       "command": null,
       "linuxParameters": null,
-      "cpu": 512,
+      "cpu": 1024,
       "environment": [],
       "resourceRequirements": null,
       "ulimits": null,
@@ -76,7 +76,7 @@
       }],
       "command": null,
       "linuxParameters": null,
-      "cpu": 512,
+      "cpu": 1024,
       "environment": [],
       "resourceRequirements": null,
       "ulimits": null,
@@ -100,7 +100,9 @@
       "interactive": null,
       "healthCheck": null,
       "essential": true,
-      "links": ["tuning-app-container"],
+      "links": [
+        "tuning-app-container"
+      ],
       "hostname": null,
       "extraHosts": null,
       "pseudoTerminal": null,
@@ -112,73 +114,18 @@
       "name": "reverse-proxy-container"
     }
   ],
-  "placementConstraints": [],
   "memory": null,
   "taskRoleArn": "arn:aws:iam::447993352427:role/ecsTaskExecutionRole",
-  "compatibilities": [
-    "EXTERNAL",
-    "EC2"
-  ],
-  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:447993352427:task-definition/tuning-app-task:43",
   "family": "tuning-app-task",
-  "requiresAttributes": [{
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.execution-role-awslogs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.ecr-auth"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.env-files.s3"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.task-iam-role"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.container-ordering"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.execution-role-ecr-pull"
-    }
-  ],
   "pidMode": null,
   "requiresCompatibilities": [
     "EC2"
   ],
   "networkMode": null,
   "cpu": "2048",
-  "revision": 43,
-  "status": "ACTIVE",
-  "inferenceAccelerators": null,
+  "inferenceAccelerators": [],
   "proxyConfiguration": null,
-  "volumes": []
+  "volumes": [],
+  "placementConstraints": [],
+  "tags": []
 }
