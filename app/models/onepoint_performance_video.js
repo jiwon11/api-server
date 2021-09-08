@@ -48,7 +48,7 @@ export default class OnepointPerformanceVideo extends Model {
     );
   }
   static get getAttributes() {
-    return ['ID', 'name', 'url'];
+    return ['ID', 'url'];
   }
   /* RELATIONSHIPS */
 

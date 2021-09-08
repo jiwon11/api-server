@@ -10,7 +10,7 @@ const development = {
   port: 3306,
   host: env.local_DB_Host,
   username: env.local_DB_Username,
-  password: env.local_DB_Username,
+  password: env.local_DB_Password,
   logging: false,
   dialect: 'mysql',
   timezone: '+09:00',
