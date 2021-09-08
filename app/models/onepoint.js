@@ -38,7 +38,7 @@ export default class Onepoint extends Model {
   }
 
   static get getAttributes() {
-    return ['ID', 'phone_NO', 'question'];
+    return ['ID', 'phone_NO', 'question', 'class'];
   }
   /* RELATIONSHIPS */
 
