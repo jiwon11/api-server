@@ -33,6 +33,10 @@ export default class OnepointPerformance extends Model {
         size: {
           type: DataTypes.INTEGER,
           allowNull: false
+        },
+        index: {
+          type: DataTypes.INTEGER,
+          allowNull: false
         }
       },
       {
@@ -48,7 +52,7 @@ export default class OnepointPerformance extends Model {
     );
   }
   static get getAttributes() {
-    return ['ID', 'url', 'name', 'mime_type'];
+    return ['ID', 'url', 'name', 'mime_type', 'index'];
   }
   /* RELATIONSHIPS */
 
