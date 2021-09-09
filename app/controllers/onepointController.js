@@ -3,8 +3,8 @@ import onepointService from '../services/onepointService';
 export const create = async function (req, res) {
   try {
     const onepointDTO = { ...{ class: req.path.split('/')[1] }, ...req.body };
-    const performanceVideoDTO = req.files;
-    const { statusCode, result } = await onepointService.create(onepointDTO, performanceVideoDTO);
+    const performanceDTO = Object.values(req.files).flat();
+    const { statusCode, result } = await onepointService.create(onepointDTO, performanceDTO);
     return res.jsonResult(statusCode, result);
   } catch (err) {
     console.log(err);
@@ -26,9 +26,9 @@ export const get = async function (req, res) {
 export const edit = async function (req, res) {
   try {
     const onepointId = req.params.id;
-    const performanceVideoDTO = req.files;
+    const performanceDTO = Object.values(req.files).flat();
     const onepointDTO = { ...{ class: req.path.split('/')[1] }, ...req.body };
-    const { statusCode, result } = await onepointService.edit(onepointId, onepointDTO, performanceVideoDTO);
+    const { statusCode, result } = await onepointService.edit(onepointId, onepointDTO, performanceDTO);
     return res.jsonResult(statusCode, result);
   } catch (err) {
     console.log(err);

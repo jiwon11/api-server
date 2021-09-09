@@ -1,18 +1,18 @@
 import OnepointModel from '../models/onepoint';
-import OnepointPerformanceVideoModel from '../models/onepoint_performance_video';
+import OnepointPerformanceModel from '../models/onepoint_performance';
 
 export default class onepointService {
-  static async create(onepointDTO, performanceVideoDTO) {
+  static async create(onepointDTO, performanceDTO) {
     try {
       const createdOnepoint = await OnepointModel.create(onepointDTO);
-      if (performanceVideoDTO) {
+      if (performanceDTO) {
         await Promise.all(
-          performanceVideoDTO.map(performanceVideo =>
-            OnepointPerformanceVideoModel.create({
-              name: performanceVideo.fieldname,
-              mime_type: performanceVideo.mimetype,
-              url: performanceVideo.location,
-              size: performanceVideo.size,
+          performanceDTO.map(performanceMedia =>
+            OnepointPerformanceModel.create({
+              name: performanceMedia.fieldname,
+              mime_type: performanceMedia.mimetype,
+              url: performanceMedia.location,
+              size: performanceMedia.size,
               width: 0,
               height: 0,
               onepoint_ID: createdOnepoint.ID
@@ -35,8 +35,8 @@ export default class onepointService {
         where: { ID: onepointId },
         attributes: OnepointModel.getAttributes,
         include: {
-          model: OnepointPerformanceVideoModel,
-          attributes: OnepointPerformanceVideoModel.getAttributes
+          model: OnepointPerformanceModel,
+          attributes: OnepointPerformanceModel.getAttributes
         }
       });
       if (onepointRecords) {
@@ -50,22 +50,22 @@ export default class onepointService {
     }
   }
 
-  static async edit(onepointId, onepointDTO, performanceVideoDTO) {
+  static async edit(onepointId, onepointDTO, performanceDTO) {
     try {
       const onepointRecords = await OnepointModel.findOne({
         where: { ID: onepointId }
       });
       if (onepointRecords) {
         await onepointRecords.update(onepointDTO);
-        if (performanceVideoDTO) {
-          await OnepointPerformanceVideoModel.destroy({ where: { onepoint_ID: onepointRecords.ID } });
+        if (performanceDTO) {
+          await OnepointPerformanceModel.destroy({ where: { onepoint_ID: onepointRecords.ID } });
           await Promise.all(
-            performanceVideoDTO.map(performanceVideo =>
-              OnepointPerformanceVideoModel.create({
-                name: performanceVideo.fieldname,
-                mime_type: performanceVideo.mimetype,
-                url: performanceVideo.location,
-                size: performanceVideo.size,
+            performanceDTO.map(performanceMedia =>
+              OnepointPerformanceModel.create({
+                name: performanceMedia.fieldname,
+                mime_type: performanceMedia.mimetype,
+                url: performanceMedia.location,
+                size: performanceMedia.size,
                 width: 0,
                 height: 0,
                 onepoint_ID: onepointRecords.ID

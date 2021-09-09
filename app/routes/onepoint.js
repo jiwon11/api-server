@@ -7,10 +7,10 @@ const router = express.Router();
 // custom utils And middlewares
 import * as onepoint from '../controllers/onepointController';
 
-router.post('/violin', upload.array('performance_video'), onepoint.create);
+router.post('/violin', upload.fields([{ name: 'performance_video' }, { name: 'performance_img' }]), onepoint.create);
 
 router.get('/violin/:id', onepoint.get);
 
-router.put('/violin/:id', upload.array('performance_video'), onepoint.edit);
+router.put('/violin/:id', upload.fields([{ name: 'performance_video' }, { name: 'performance_img' }]), onepoint.edit);
 
 export default router;
