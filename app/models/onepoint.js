@@ -45,7 +45,7 @@ export default class Onepoint extends Model {
   // eslint-disable-next-line no-unused-vars
   static associate(models) {
     // Using additional options like CASCADE etc for demonstration
-    this.hasMany(models.OnepointPerformanceVideo, {
+    this.hasMany(models.OnepointPerformance, {
       onDelete: 'CASCADE',
       foreignKey: 'onepoint_ID',
       sourceKey: 'ID'

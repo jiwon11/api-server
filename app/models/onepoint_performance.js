@@ -1,7 +1,7 @@
 import pkg from 'sequelize';
 const { Model, Op } = pkg;
 
-export default class OnepointPerformanceVideo extends Model {
+export default class OnepointPerformance extends Model {
   static initialize(sequelize, DataTypes) {
     return super.init(
       {
@@ -37,8 +37,8 @@ export default class OnepointPerformanceVideo extends Model {
       },
       {
         sequelize,
-        modelName: 'OnepointPerformanceVideo',
-        tableName: 'ONEPOINT_PERFORMANCE_VIDEO_TB',
+        modelName: 'OnepointPerformance',
+        tableName: 'ONEPOINT_PERFORMANCE_TB',
         freezeTableName: true,
         timestamps: true,
         paranoid: true,
@@ -48,7 +48,7 @@ export default class OnepointPerformanceVideo extends Model {
     );
   }
   static get getAttributes() {
-    return ['ID', 'url'];
+    return ['ID', 'url', 'name', 'mime_type'];
   }
   /* RELATIONSHIPS */
 
@@ -63,21 +63,4 @@ export default class OnepointPerformanceVideo extends Model {
   }
 
   /* CLASS-LEVEL FUNCTIONS */
-
-  static async getOnlyImgs(teacherId) {
-    try {
-      return this.findAll({
-        where: {
-          teacher_ID: teacherId,
-          name: {
-            [Op.not]: 'performanceVideo'
-          }
-        },
-        attributes: CoverImg.getAttributes
-      });
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
-  }
 }
