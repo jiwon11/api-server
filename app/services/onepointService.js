@@ -15,7 +15,8 @@ export default class onepointService {
               size: performanceMedia.size,
               width: 0,
               height: 0,
-              onepoint_ID: createdOnepoint.ID
+              onepoint_ID: createdOnepoint.ID,
+              index: performanceDTO.indexOf(performanceMedia)
             })
           )
         );
@@ -36,7 +37,8 @@ export default class onepointService {
         attributes: OnepointModel.getAttributes,
         include: {
           model: OnepointPerformanceModel,
-          attributes: OnepointPerformanceModel.getAttributes
+          attributes: OnepointPerformanceModel.getAttributes,
+          order: [['index', 'desc']]
         }
       });
       if (onepointRecords) {
@@ -68,7 +70,8 @@ export default class onepointService {
                 size: performanceMedia.size,
                 width: 0,
                 height: 0,
-                onepoint_ID: onepointRecords.ID
+                onepoint_ID: onepointRecords.ID,
+                index: performanceDTO.indexOf(performanceMedia)
               })
             )
           );
