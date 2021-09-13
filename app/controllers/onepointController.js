@@ -2,7 +2,6 @@ import onepointService from '../services/onepointService';
 
 export const create = async function (req, res) {
   try {
-    console.log(req.files);
     const onepointDTO = { ...{ class: req.path.split('/')[1] }, ...req.body };
     const performanceDTO = Object.values(req.files).flat();
     const { statusCode, result } = await onepointService.create(onepointDTO, performanceDTO);
