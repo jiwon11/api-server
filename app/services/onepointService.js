@@ -26,7 +26,7 @@ export default class onepointService {
       return { statusCode: 201, result: { id: createdOnepoint.ID } };
     } catch (err) {
       console.log(err);
-      return { statusCode: 500, result: err.message };
+      return { statusCode: 500, result: err };
     }
   }
 
