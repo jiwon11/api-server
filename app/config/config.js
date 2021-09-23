@@ -3,6 +3,7 @@
 require('@babel/register');
 
 require('dotenv').config();
+const AWSXRay = require('aws-xray-sdk');
 
 const { env } = process;
 const development = {
@@ -63,6 +64,7 @@ const production = {
     dateStrings: true,
     typeCast: true
   },
+  dialectModule: AWSXRay.captureMySQL(require('mysql')),
   pool: {
     max: 1000,
     min: 5,
