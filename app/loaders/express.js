@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
 import compression from 'compression';
-import AWSXRay from 'aws-xray-sdk;';
+import AWSXRay from 'aws-xray-sdk';
 
 // custom utils And middlewares
 import logger from '../libs/logger/index';
