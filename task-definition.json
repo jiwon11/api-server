@@ -5,7 +5,7 @@
       "name": "xray-daemon",
       "image": "amazon/aws-xray-daemon",
       "cpu": 32,
-      "memoryReservation": 256,
+      "memoryReservation": 0,
       "portMappings": [{
         "hostPort": 0,
         "containerPort": 2000,
