@@ -6,6 +6,15 @@
       "image": "amazon/aws-xray-daemon",
       "cpu": 32,
       "memoryReservation": 50,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "/ecs/tuning-app-task",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
       "portMappings": [{
         "hostPort": 0,
         "containerPort": 2000,
