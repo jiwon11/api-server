@@ -64,7 +64,7 @@ const production = {
     dateStrings: true,
     typeCast: true
   },
-  dialectModule: AWSXRay.captureMySQL(require('mysql')),
+  dialectModule: AWSXRay.captureMySQL(require('mysql2')),
   pool: {
     max: 1000,
     min: 5,
