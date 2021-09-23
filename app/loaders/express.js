@@ -22,6 +22,8 @@ import onepointRouter from '../routes/onepoint';
 // application Controllers for Routes
 import { pageNotFoundError, respondInternalError } from '../controllers/errorController';
 
+AWSXRay.captureHTTPsGlobal(require('https'));
+
 export default async app => {
   app.set('trust proxy', true);
   app.use(cors({ credentials: true, origin: true, exposedHeaders: ['cookie'] }));
@@ -34,7 +36,7 @@ export default async app => {
   app.use(logger.dev);
   AWSXRay.config([AWSXRay.plugins.EC2Plugin, AWSXRay.plugins.ECSPlugin]);
   var rules = {
-    rules: [{ description: 'Player moves.', service_name: '*', http_method: '*', url_path: '/api/move/*', fixed_target: 0, rate: 0.05 }],
+    rules: [{ description: 'Player moves.', service_name: '*', http_method: '*', url_path: '/*', fixed_target: 0, rate: 0.05 }],
     default: { fixed_target: 1, rate: 0.1 },
     version: 1
   };
