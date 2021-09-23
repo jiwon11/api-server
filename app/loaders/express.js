@@ -41,6 +41,7 @@ export default async app => {
 
   AWSXRay.middleware.setSamplingRules(rules);
   app.use(AWSXRay.express.openSegment('tuningApp'));
+  AWSXRay.middleware.enableDynamicNaming('api.tuninglesson.com');
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
