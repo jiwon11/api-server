@@ -1,7 +1,9 @@
 import onepointService from '../services/onepointService';
+var AWSXRay = require('aws-xray-sdk');
 
 export const create = async function (req, res) {
   try {
+    var segment = AWSXRay.getSegment();
     const onepointDTO = { ...{ class: req.path.split('/')[1] }, ...req.body };
     const performanceDTO = Object.values(req.files).flat();
     const { statusCode, result } = await onepointService.create(onepointDTO, performanceDTO);
@@ -14,6 +16,7 @@ export const create = async function (req, res) {
 
 export const get = async function (req, res) {
   try {
+    var segment = AWSXRay.getSegment();
     const onepointId = req.params.id;
     const { statusCode, result } = await onepointService.get(onepointId);
     return res.jsonResult(statusCode, result);
@@ -25,6 +28,7 @@ export const get = async function (req, res) {
 
 export const edit = async function (req, res) {
   try {
+    var segment = AWSXRay.getSegment();
     const onepointId = req.params.id;
     const performanceDTO = Object.values(req.files).flat();
     const onepointDTO = { ...{ class: req.path.split('/')[1] }, ...req.body };
