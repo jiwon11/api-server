@@ -4,6 +4,7 @@ require('@babel/register');
 
 require('dotenv').config();
 const AWSXRay = require('aws-xray-sdk');
+AWSXRay.captureHTTPsGlobal(require('https'));
 
 const { env } = process;
 const development = {
