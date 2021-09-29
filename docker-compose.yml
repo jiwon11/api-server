@@ -11,6 +11,9 @@ services:
       - 80:80
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      -./nginx/logrotate.conf:/etc/logrotate.conf
+    environment:
+      TZ: Asia/Seoul
     links:
       - tuning-app-container
     depends_on:
