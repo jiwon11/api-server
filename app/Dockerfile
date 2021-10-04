@@ -8,6 +8,8 @@ COPY . .
 RUN npm cache clean --force
 RUN npm install -g pm2
 
+ENV PM2_PUBLIC_KEY 2c7khq9byqutfcf
+ENV PM2_SECRET_KEY y52z594hcnrr2l9
 
 # Install app dependencies
 RUN npm install
